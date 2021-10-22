@@ -2,7 +2,7 @@ name: Release package
 
 env:
   NUGET_SOURCE_URL: https://nuget.pkg.github.com/AndrewMJordan
-  NUGET_PROJECT_DIR: src/Play/Play.csproj
+  NUGET_PROJECT_DIR: src/DJ/DJ.csproj
 
 on:
   push:
