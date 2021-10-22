@@ -69,7 +69,7 @@ namespace Andtech
 			{
 				foreach (var result in results.OrderByDescending(x => x.Score).Take(5))
 				{
-					Console.WriteLine($"{result.Score}\t{result.Term}");
+					Console.WriteLine($"{result.Score}\t{result.Term.Transform(To.TitleCase)}");
 				}
 			}
 			else
