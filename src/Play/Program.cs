@@ -1,9 +1,7 @@
 ﻿using CaseExtensions;
 using CliWrap;
-using F23.StringSimilarity;
-using FuzzySharp;
+using CommandLine;
 using System;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,56 +12,39 @@ namespace Andtech
 	class Program
 	{
 
-		class FileData
+		[Verb("play", isDefault: true, HelpText = "Play the music file.")]
+		class PlayOptions
 		{
-			public string Path { get; set; }
-			public string Term { get; set; }
-			public double Score { get; set; }
 		}
+
+		[Verb("list", HelpText = "List the files ranking given a query.")]
+		class ListOptions
+		{
+		}
+
+		private static string[] Args;
+		private static readonly string[] Verbs = new string[] { "play", "list" };
 
 		static async Task Main(string[] args)
 		{
-			var root = ".";
-			var query = Standardize(string.Join(" ", args));
+			Args = args.Except(Verbs).ToArray();
+			var result = Parser.Default.ParseArguments<PlayOptions, ListOptions>(args);
+			await result.WithParsedAsync<PlayOptions>(Play);
+			result.WithParsed<ListOptions>(List);
+		}
 
-			var l = new MetricLCS();
+		static async Task Play(PlayOptions options)
+		{
+			var searcher = new MusicFileSearcher();
+			var results = searcher.GetRanking(Args);
 
-			var terms = args.Select(x => $@"\b{x}[^\s]*");
-			var regex = new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
-			Console.WriteLine(regex);
-
-			var searcher = new Searcher();
-			var files = searcher.EnumerateFiles(root);
-			var datas = files
-				.Select(ToFileData);
-			Console.WriteLine($"'{query}'");
-
-			FileData ToFileData(string path)
+			if (results.Any())
 			{
-				var filename = Path.GetFileNameWithoutExtension(path);
-				var term = Standardize(filename);
-
-				return new FileData { Path = path, Term = term, Score = Fuzz.PartialTokenSetRatio(query, term, FuzzySharp.PreProcess.PreprocessMode.Full) };
-			}
-
-			datas = datas.Where(x => regex.IsMatch(x.Term));
-
-			var top = datas.OrderByDescending(x => x.Score).Take(6);
-
-			foreach (var element in datas.OrderByDescending(x => x.Score).Take(6))
-			{
-				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.WriteLine($"{element.Term} ({element.Score})");
-			}
-
-			if (top.Any())
-			{
-				var best = top.First();
+				var best = results.OrderByDescending(x => x.Score).First();
 				Console.ForegroundColor = ConsoleColor.Green;
 				var player = Environment.GetEnvironmentVariable("PLAYER");
 				Console.WriteLine($"{player} {best.Path}");
 
-				return;
 				await Cli.Wrap(player)
 					.WithArguments(best.Path)
 					.ExecuteAsync();
@@ -75,11 +56,23 @@ namespace Andtech
 			}
 		}
 
-		static string Standardize(string x)
+		static void List(ListOptions options)
 		{
-			x = x.ToKebabCase();
-			x = x.Replace("-", " ");
-			return x;
+			var searcher = new MusicFileSearcher();
+			var results = searcher.GetRanking(Args);
+
+			if (results.Any())
+			{
+				foreach (var result in results.OrderByDescending(x => x.Score).Take(5))
+				{
+					Console.WriteLine($"{result.Score}\t{result.Term}");
+				}
+			}
+			else
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.Error.WriteLine($"No matches");
+			}
 		}
 	}
 }
