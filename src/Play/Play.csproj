@@ -6,7 +6,7 @@
 		<Version>0.1.0</Version>
 		<Authors>AndrewMJordan</Authors>
 		<Company>AndrewMJordan</Company>
-		<StartupObject>Play.Program</StartupObject>
+		<StartupObject></StartupObject>
 	</PropertyGroup>
 
 	<!-- NuGet settings -->
