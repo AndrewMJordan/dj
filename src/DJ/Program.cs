@@ -1,4 +1,5 @@
-﻿using CliWrap;
+﻿using CaseExtensions;
+using CliWrap;
 using CommandLine;
 using System;
 using System.Linq;
@@ -39,9 +40,10 @@ namespace Andtech
 			if (results.Any())
 			{
 				var best = results.OrderByDescending(x => x.Score).First();
-				Console.ForegroundColor = ConsoleColor.Green;
 				var player = Environment.GetEnvironmentVariable("PLAYER");
-				Console.WriteLine($"{player} {best.Path}");
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine($"Now playing: '{best.Path.ToPascalCase()}'");
+				Console.ResetColor();
 
 				await Cli.Wrap(player)
 					.WithArguments(best.Path)
