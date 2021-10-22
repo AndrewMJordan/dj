@@ -1,0 +1,8 @@
+include:
+  project: CyberstarSoftworks/dotnet
+  file: ci.yml
+
+build_publish:
+  extends: .build_publish_nuget
+  variables:
+    PROJECT_PATH: src
