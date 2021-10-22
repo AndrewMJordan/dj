@@ -21,29 +21,37 @@
 		<RepositoryType></RepositoryType>
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<AssemblyName>Play</AssemblyName>
-		<AssemblyVersion>0.1.2.0</AssemblyVersion>
-		<FileVersion>0.1.2.0</FileVersion>
-		<Product>Play</Product>
-		<RepositoryUrl>https://github.com/AndrewMJordan/play</RepositoryUrl>
+		<AssemblyVersion>0.1.0.0</AssemblyVersion>
+		<FileVersion>0.1.0.0</FileVersion>
+		<Product>DJ</Product>
+		<RepositoryUrl>https://github.com/AndrewMJordan/dj</RepositoryUrl>
 		<RootNamespace>Play</RootNamespace>
 		<Company>AndrewMJordan</Company>
 		<Authors>AndrewMJordan</Authors>
-		<PackageId>Andtech.Play</PackageId>
 	</PropertyGroup>
 
 	<!-- Dotnet Tool settings -->
 	<PropertyGroup Condition="$(RuntimeIdentifier) != 'linux-x64'">
 		<PackAsTool>true</PackAsTool>
-		<PackageId>Andtech.Play</PackageId>
+		<PackageId>Andtech.DJ</PackageId>
 		<ToolCommandName>play</ToolCommandName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/AndrewMJordan/dj</PackageProjectUrl>
+		<Copyright>© AndrewMJordan 2021</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="CaseExtensions" Version="1.1.0" />
 	  <PackageReference Include="CliWrap" Version="3.3.3" />
 	  <PackageReference Include="CommandLineParser" Version="2.9.0-preview1" />
 	  <PackageReference Include="FuzzySharp" Version="2.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
