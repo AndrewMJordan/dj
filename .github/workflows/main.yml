@@ -12,7 +12,8 @@ on:
 
 jobs:
   publish:
-    runs-on: mcr.microsoft.com/dotnet/sdk:5.0
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:5.0
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
