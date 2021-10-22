@@ -28,7 +28,7 @@
 		<RootNamespace>Play</RootNamespace>
 		<Company>AndrewMJordan</Company>
 		<Authors>AndrewMJordan</Authors>
-		<PackageId>Andtec.Play</PackageId>
+		<PackageId>Andtech.Play</PackageId>
 	</PropertyGroup>
 
 	<!-- Dotnet Tool settings -->
