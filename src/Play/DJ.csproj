@@ -20,12 +20,12 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<RepositoryType></RepositoryType>
 		<PackageLicenseExpression></PackageLicenseExpression>
-		<AssemblyName>Play</AssemblyName>
+		<AssemblyName>DJ</AssemblyName>
 		<AssemblyVersion>0.1.0.0</AssemblyVersion>
 		<FileVersion>0.1.0.0</FileVersion>
 		<Product>DJ</Product>
 		<RepositoryUrl>https://github.com/AndrewMJordan/dj</RepositoryUrl>
-		<RootNamespace>Play</RootNamespace>
+		<RootNamespace>Andtech</RootNamespace>
 		<Company>AndrewMJordan</Company>
 		<Authors>AndrewMJordan</Authors>
 	</PropertyGroup>
@@ -34,7 +34,7 @@
 	<PropertyGroup Condition="$(RuntimeIdentifier) != 'linux-x64'">
 		<PackAsTool>true</PackAsTool>
 		<PackageId>Andtech.DJ</PackageId>
-		<ToolCommandName>play</ToolCommandName>
+		<ToolCommandName>dj</ToolCommandName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
