@@ -21,7 +21,10 @@ namespace Andtech
 		{
 			".mp3",
 			".mp4",
+			".m4a",
 			".wav",
+			".wma",
+			".aac",
 			".aiff",
 			".flac"
 		};
