@@ -16,8 +16,6 @@ $ dotnet tool install --global Andtech.DJ
 $ export PLAYER='vlc.exe'
 ```
 
----
-
 # Usage
 * Use `dj` to enqueue audio files. The search is performed from your current directory (and all child directories).
 
