@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -40,6 +40,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="CaseExtensions" Version="1.1.0" />
+	  <PackageReference Include="CliWrap" Version="3.3.3" />
 	  <PackageReference Include="F23.StringSimilarity" Version="4.1.0" />
 	  <PackageReference Include="FuzzySharp" Version="2.0.2" />
 	</ItemGroup>
