@@ -1,9 +1,7 @@
-﻿using CaseExtensions;
-using CliWrap;
+﻿using CliWrap;
 using CommandLine;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Andtech
