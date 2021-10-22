@@ -30,7 +30,7 @@
 	</PropertyGroup>
 
 	<!-- Dotnet Tool settings -->
-	<PropertyGroup Condition="$(RuntimeIdentifier) != 'linux-x64'">
+	<PropertyGroup>
 		<PackAsTool>true</PackAsTool>
 		<PackageId>Andtech.Play</PackageId>
 		<ToolCommandName>play</ToolCommandName>
