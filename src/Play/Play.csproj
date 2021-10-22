@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+		<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
 		<Version>0.1.0</Version>
 		<Authors>AndrewMJordan</Authors>
 		<Company>AndrewMJordan</Company>
@@ -40,6 +41,7 @@
 	<ItemGroup>
 	  <PackageReference Include="CaseExtensions" Version="1.1.0" />
 	  <PackageReference Include="F23.StringSimilarity" Version="4.1.0" />
+	  <PackageReference Include="FuzzySharp" Version="2.0.2" />
 	</ItemGroup>
 
 </Project>
