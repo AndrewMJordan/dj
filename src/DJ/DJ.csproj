@@ -28,6 +28,7 @@
 		<RootNamespace>Andtech</RootNamespace>
 		<Company>AndrewMJordan</Company>
 		<Authors>AndrewMJordan</Authors>
+		<PackageId>Andtech.DJ</PackageId>
 	</PropertyGroup>
 
 	<!-- Dotnet Tool settings -->
