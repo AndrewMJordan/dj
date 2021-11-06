@@ -5,9 +5,9 @@ env:
   NUGET_PROJECT_DIR: src/DJ/DJ.csproj
 
 on:
-  push:
-    branches:
-      - production
+  create:
+    tags:
+      - v*
   workflow_dispatch:
 
 jobs:
