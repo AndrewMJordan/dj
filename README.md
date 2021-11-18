@@ -47,5 +47,5 @@ This works best with [VLC Media Player](https://www.videolan.org/) and the follo
 * **Interface > Enqueue items into playlist in one instance mode:** `ON`
 
 # Links
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/AndrewMJordan/dj/tree/gitpod)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#https://github.com/AndrewMJordan/dj)
 
