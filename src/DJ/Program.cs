@@ -48,9 +48,12 @@ namespace Andtech
 					Console.WriteLine($"Now playing '{best.Term.Transform(To.TitleCase)}'...");
 					Console.ResetColor();
 
-					var arguments = new List<string> { best.Path };
+					var tokens = Utility.SplitCommand(player);
+					var command = tokens.First();
 
-					await Cli.Wrap(player)
+					var arguments = new List<string>(tokens.Skip(1)) { best.Path };
+
+					_ = Cli.Wrap(command)
 						.WithArguments(arguments)
 						.ExecuteAsync();
 				}
