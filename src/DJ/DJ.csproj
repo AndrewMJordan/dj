@@ -4,7 +4,7 @@
 		<OutputType>Exe</OutputType>
 		<TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
 		<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
-		<Version>0.1.4</Version>
+		<Version>0.2.0</Version>
 		<Authors>AndrewMJordan</Authors>
 		<Company>AndrewMJordan</Company>
 		<StartupObject></StartupObject>
@@ -21,8 +21,8 @@
 		<RepositoryType></RepositoryType>
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<AssemblyName>DJ</AssemblyName>
-		<AssemblyVersion>0.1.4.0</AssemblyVersion>
-		<FileVersion>0.1.3.0</FileVersion>
+		<AssemblyVersion>0.2.0.0</AssemblyVersion>
+		<FileVersion>0.2.0.0</FileVersion>
 		<Product>DJ</Product>
 		<RepositoryUrl>https://github.com/AndrewMJordan/dj</RepositoryUrl>
 		<RootNamespace>Andtech</RootNamespace>
