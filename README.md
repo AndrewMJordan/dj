@@ -14,8 +14,11 @@ $ dotnet tool install --global Andtech.DJ
 ```
 
 3. Create an environment variable `PLAYER`.
+
+For example
+
 ```bash
-$ export PLAYER='vlc.exe'
+$ export PLAYER='vlc --qt-start-minimized --playlist-enqueue'
 ```
 
 # Usage
