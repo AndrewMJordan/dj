@@ -1,5 +1,4 @@
-﻿using CaseExtensions;
-using Humanizer;
+﻿using Humanizer;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;

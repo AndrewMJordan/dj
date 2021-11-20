@@ -42,11 +42,10 @@
 		<Copyright>© AndrewMJordan 2021</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="CaseExtensions" Version="1.1.0" />
 	  <PackageReference Include="CliWrap" Version="3.3.3" />
 	  <PackageReference Include="CommandLineParser" Version="2.9.0-preview1" />
 	  <PackageReference Include="FuzzySharp" Version="2.0.2" />
-	  <PackageReference Include="Humanizer" Version="2.11.10" />
+	  <PackageReference Include="Humanizer" Version="2.13.14" />
 	  <PackageReference Include="TagLibSharp" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
