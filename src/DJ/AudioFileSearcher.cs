@@ -47,8 +47,21 @@ namespace Andtech
 			".webm",
 		};
 
+		public bool TryGetExact(Query query, out AudioFile audioFile)
+		{
+			if (!File.Exists(query.Raw))
+			{
+				audioFile = default;
+				return false;
+			}
+
+			audioFile = AudioFile.Read(query.Raw);
+			return true;
+		}
+
 		public IEnumerable<RankResult> GetRanking(Query query)
 		{
+
 			var comparer = new AudioFileComparer(query);
 			var paths = Directory
 				.EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
@@ -56,14 +69,6 @@ namespace Andtech
 
 			var audioFiles = paths
 				.Select(AudioFile.Read);
-
-			var exacts = audioFiles
-				.Where(x => Path.GetRelativePath(Environment.CurrentDirectory, x.Path) == query.Raw);
-
-			if (exacts.Any())
-			{
-				return exacts.Select(ToData);
-			}
 
 			var rankings = audioFiles
 				.Where(comparer.IsMatch)

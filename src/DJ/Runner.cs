@@ -78,6 +78,16 @@ namespace Andtech
 		{
 			var searcher = new AudioFileSearcher(musicDirectory);
 			var query = Query.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
+			if (searcher.TryGetExact(query, out var audioFile))
+			{
+				var result = new RankResult
+				{
+					AudioFile = audioFile,
+					Score = 100,
+					Term = string.Empty,
+				};
+				return Enumerable.Repeat(result, 1);
+			}
 
 			Log("Query is:");
 			Log($"  Title: {query.Title}");
