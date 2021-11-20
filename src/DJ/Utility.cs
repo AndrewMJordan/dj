@@ -11,6 +11,11 @@ namespace Andtech
 
         public static string Standardize(string x)
         {
+            if (x is null)
+            {
+                return null;
+            }
+
             return x.Humanize(LetterCasing.LowerCase);
         }
 

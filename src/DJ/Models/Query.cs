@@ -19,9 +19,9 @@ namespace Andtech.Models
 
             return new Query()
             {
-                Title = input,
-                Artist = artist,
-                Album = album,
+                Title = Utility.Standardize(input),
+                Artist = Utility.Standardize(artist),
+                Album = Utility.Standardize(album),
             };
         }
     }

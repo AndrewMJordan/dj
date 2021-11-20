@@ -21,9 +21,6 @@ namespace Andtech
             var tokens = Utility.SplitCommand(command);
             var executable = tokens.First();
 
-            Console.WriteLine(executable);
-            Console.WriteLine(audioFile.Path);
-
             var arguments = new List<string>(tokens.Skip(1)) { audioFile.Path };
 
             Console.ForegroundColor = ConsoleColor.Green;
