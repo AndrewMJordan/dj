@@ -7,58 +7,69 @@ using System.Text.RegularExpressions;
 namespace Andtech
 {
 
-	public class RankResult
-	{
-		public string Path { get; set; }
-		public string Term { get; set; }
-		public double Score { get; set; }
-	}
+    public class RankResult
+    {
+        public string Path { get; set; }
+        public string Term { get; set; }
+        public double Score { get; set; }
+    }
 
-	class MusicFileSearcher
-	{
-		private readonly string searchRoot;
+    class MusicFileSearcher
+    {
+        private readonly string searchRoot;
 
-		public MusicFileSearcher(string searchRoot = ".")
+        public MusicFileSearcher(string searchRoot = ".")
         {
-			this.searchRoot = searchRoot;
+            this.searchRoot = searchRoot;
         }
 
-		static List<string> ValidExtensions = new List<string>()
-		{
-			".mp3",
-			".mp4",
-			".m4a",
-			".wav",
-			".wma",
-			".aac",
-			".aiff",
-			".flac"
-		};
+        static List<string> ValidExtensions = new List<string>()
+        {
+            "aa",
+            "aax",
+            "aac",
+            "aiff",
+            "ape",
+            "dsf",
+            "flac",
+            "m4a",
+            "m4b",
+            "m4p",
+            "mp3",
+            "mpc",
+            "mpp",
+            "ogg",
+            "oga",
+            "wav",
+            "wma",
+            "wv",
+            "webm",
+        };
 
-		public IEnumerable<RankResult> GetRanking(params string[] tokens)
-		{
-			var query = Utility.Standardize(string.Join(" ", tokens));
-			var terms = tokens.Select(x => $@"\b{x}[^\s]*");
-			var regex = new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
+        public IEnumerable<RankResult> GetRanking(params string[] tokens)
+        {
+            var query = Utility.Standardize(string.Join(" ", tokens));
+            var terms = tokens.Select(x => $@"\b{x}[^\s]*");
+            var regex = new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
 
-			var paths = Directory
-				.EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
-				.Where(IsMusicFile);
+            var paths = Directory
+                .EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
+                .Where(IsMusicFile);
 
-			return paths.Select(ToData).Where(x => regex.IsMatch(x.Term));
+            return paths.Select(ToData).Where(x => regex.IsMatch(x.Term));
 
-			RankResult ToData(string path)
-			{
-				var filename = Path.GetFileNameWithoutExtension(path);
-				var term = Utility.Standardize(filename);
+            RankResult ToData(string path)
+            {
+                var filename = Path.GetFileNameWithoutExtension(path);
+                var term = Utility.Standardize(filename);
 
-				return new RankResult { Path = path, Term = term, Score = Fuzz.Ratio(query, term, FuzzySharp.PreProcess.PreprocessMode.Full) };
-			}
-		}
+                return new RankResult { Path = path, Term = term, Score = Fuzz.Ratio(query, term, FuzzySharp.PreProcess.PreprocessMode.Full) };
+            }
+        }
 
-		static bool IsMusicFile(string path)
-		{
-			return ValidExtensions.Contains(Path.GetExtension(path));
-		}
-	}
+        static bool IsMusicFile(string path)
+        {
+            return ValidExtensions.Contains(Path.GetExtension(path));
+        }
+    }
 }
