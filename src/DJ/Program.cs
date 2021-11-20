@@ -19,6 +19,8 @@ namespace Andtech
         [Option("dry-run", HelpText = "Dry run the command.")]
         public bool DryRun { get; set; }
 
+        [Option("title", HelpText = "Filter results by title")]
+        public string Title { get; set; }
         [Option("artist", HelpText = "Filter results by artist")]
         public string Artist { get; set; }
         [Option("album", HelpText = "Filter results by album.")]
