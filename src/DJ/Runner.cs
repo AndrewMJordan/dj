@@ -1,6 +1,7 @@
 ﻿using Andtech.Models;
 using Humanizer;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,20 +13,20 @@ namespace Andtech
     {
         private readonly Options options;
         private bool Verbose { get; set; }
+        private readonly string musicDirectory;
 
         public Runner(Options options)
         {
             this.options = options;
             Verbose = options.Verbose;
+
+            musicDirectory = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
+            musicDirectory = Directory.Exists(musicDirectory) ? musicDirectory : Environment.CurrentDirectory;
         }
 
         public async Task List()
         {
-            var musicDir = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
-            musicDir = Directory.Exists(musicDir) ? musicDir : Environment.CurrentDirectory;
-            var searcher = new AudioFileSearcher(musicDir);
-            var query = Utility.Standardize(string.Join(" ", options.Tokens));
-            var results = searcher.GetRanking(options.Tokens.ToArray());
+            var results = GetRankedAudioFiles();
 
             Log("List mode...");
 
@@ -45,13 +46,7 @@ namespace Andtech
 
         public async Task Play()
         {
-            var musicDir = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
-            musicDir = Directory.Exists(musicDir) ? musicDir : Environment.CurrentDirectory;
-            var searcher = new AudioFileSearcher(musicDir);
-
-            var query = Utility.Standardize(string.Join(" ", options.Tokens));
-
-            var results = searcher.GetRanking(options.Tokens.ToArray());
+            var results = GetRankedAudioFiles();
 
             if (results.Any())
             {
@@ -81,6 +76,13 @@ namespace Andtech
             {
                 Console.WriteLine(message);
             }
+        }
+
+        private IEnumerable<RankResult> GetRankedAudioFiles()
+        {
+            var searcher = new AudioFileSearcher(musicDirectory);
+            var query = Utility.Standardize(string.Join(" ", options.Tokens));
+            return searcher.GetRanking(options.Tokens.ToArray());
         }
     }
 }
