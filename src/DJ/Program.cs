@@ -4,6 +4,7 @@ using CommandLine;
 using Humanizer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,7 +38,10 @@ namespace Andtech
 			}
 			else
 			{
-				var searcher = new MusicFileSearcher();
+				var musicDir = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
+				musicDir = Directory.Exists(musicDir) ? musicDir : Environment.CurrentDirectory;
+
+				var searcher = new MusicFileSearcher(musicDir);
 				var results = searcher.GetRanking(options.Tokens.ToArray());
 
 				if (results.Any())
@@ -50,6 +54,9 @@ namespace Andtech
 
 					var tokens = Utility.SplitCommand(player);
 					var command = tokens.First();
+
+					Console.WriteLine(player);
+					Console.WriteLine(best.Path);
 
 					var arguments = new List<string>(tokens.Skip(1)) { best.Path };
 
