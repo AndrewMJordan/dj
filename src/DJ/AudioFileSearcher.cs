@@ -1,5 +1,6 @@
 ﻿using Andtech.Models;
 using FuzzySharp;
+using Humanizer;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,25 +28,25 @@ namespace Andtech
 
         static List<string> ValidExtensions = new List<string>()
         {
-            "aa",
-            "aax",
-            "aac",
-            "aiff",
-            "ape",
-            "dsf",
-            "flac",
-            "m4a",
-            "m4b",
-            "m4p",
-            "mp3",
-            "mpc",
-            "mpp",
-            "ogg",
-            "oga",
-            "wav",
-            "wma",
-            "wv",
-            "webm",
+            ".aa",
+            ".aax",
+            ".aac",
+            ".aiff",
+            ".ape",
+            ".dsf",
+            ".flac",
+            ".m4a",
+            ".m4b",
+            ".m4p",
+            ".mp3",
+            ".mpc",
+            ".mpp",
+            ".ogg",
+            ".oga",
+            ".wav",
+            ".wma",
+            ".wv",
+            ".webm",
         };
 
         public IEnumerable<RankResult> GetRanking(Query query)
@@ -54,34 +55,35 @@ namespace Andtech
                 .EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
                 .Where(IsMusicFile);
 
-            var audioFiles = paths.Select(Read);
-
             var titleRegex = GetRegexFromPrefixes(Utility.Standardize(query.Title).Split(' '));
+            var audioFiles = paths
+                .Select(AudioFile.Read);
             var rankings = audioFiles
                 .Where(x => titleRegex.IsMatch(x.Title))
                 .Select(x => ToData(x));
 
+            foreach (var file in audioFiles)
+            {
+                System.Console.WriteLine($"{file.Title} by {file.Artist ?? "?"} from {file.Album ?? "?"}");
+            }
             System.Console.WriteLine(titleRegex);
+            System.Console.WriteLine(rankings.Count());
 
             return rankings;
-
-            AudioFile Read(string path)
-            {
-
-            }
 
             Regex GetRegexFromPrefixes(IEnumerable<string> prefixes)
             {
                 var terms = prefixes .Select(x => $@"\b{x}[^\s]*");
-                return new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
+                return new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}", RegexOptions.IgnoreCase);
             }
 
             RankResult ToData(AudioFile audioFile)
             {
                 var expected = Utility.Standardize(query.Title);
                 var actual = Utility.Standardize(audioFile.Title);
+                var score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full);
 
-                return new RankResult { Path = audioFile.Path, Term = actual, Score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full) };
+                return new RankResult { Path = audioFile.Path, Term = actual, Score = score };
             }
         }
 
