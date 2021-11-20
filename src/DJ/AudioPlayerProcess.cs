@@ -23,8 +23,15 @@ namespace Andtech
 
 			var arguments = new List<string>(tokens.Skip(1)) { audioFile.Path };
 
+
+			var message = $"Now playing '{audioFile.Title}'";
+			if (!string.IsNullOrWhiteSpace(audioFile.Artist))
+			{
+				message += $" by '{audioFile.Artist}'";
+			}
+
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine($"Now playing {audioFile.Title} by {audioFile.Artist}...");
+			Console.WriteLine($"{message}...");
 			Console.ResetColor();
 
 			_ = Cli.Wrap(executable)
