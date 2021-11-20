@@ -1,4 +1,5 @@
 ﻿using CaseExtensions;
+using Humanizer;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,9 +12,7 @@ namespace Andtech
 
         public static string Standardize(string x)
         {
-            x = x.ToKebabCase();
-            x = x.Replace("-", " ");
-            return x;
+            return x.Humanize(LetterCasing.LowerCase);
         }
 
         public static IEnumerable<string> SplitCommand(string command)

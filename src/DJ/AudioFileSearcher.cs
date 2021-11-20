@@ -1,4 +1,5 @@
-﻿using FuzzySharp;
+﻿using Andtech.Models;
+using FuzzySharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,11 +8,12 @@ using System.Text.RegularExpressions;
 namespace Andtech
 {
 
-    public class RankResult
+    internal class RankResult
     {
         public string Path { get; set; }
         public string Term { get; set; }
         public double Score { get; set; }
+        public AudioFile AudioFile { get; set; }
     }
 
     class AudioFileSearcher
@@ -46,24 +48,40 @@ namespace Andtech
             "webm",
         };
 
-        public IEnumerable<RankResult> GetRanking(params string[] tokens)
+        public IEnumerable<RankResult> GetRanking(Query query)
         {
-            var query = Utility.Standardize(string.Join(" ", tokens));
-            var terms = tokens.Select(x => $@"\b{x}[^\s]*");
-            var regex = new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
-
             var paths = Directory
                 .EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
                 .Where(IsMusicFile);
 
-            return paths.Select(ToData).Where(x => regex.IsMatch(x.Term));
+            var audioFiles = paths.Select(Read);
 
-            RankResult ToData(string path)
+            var titleRegex = GetRegexFromPrefixes(Utility.Standardize(query.Title).Split(' '));
+            var rankings = audioFiles
+                .Where(x => titleRegex.IsMatch(x.Title))
+                .Select(x => ToData(x));
+
+            System.Console.WriteLine(titleRegex);
+
+            return rankings;
+
+            AudioFile Read(string path)
             {
-                var filename = Path.GetFileNameWithoutExtension(path);
-                var term = Utility.Standardize(filename);
 
-                return new RankResult { Path = path, Term = term, Score = Fuzz.Ratio(query, term, FuzzySharp.PreProcess.PreprocessMode.Full) };
+            }
+
+            Regex GetRegexFromPrefixes(IEnumerable<string> prefixes)
+            {
+                var terms = prefixes .Select(x => $@"\b{x}[^\s]*");
+                return new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
+            }
+
+            RankResult ToData(AudioFile audioFile)
+            {
+                var expected = Utility.Standardize(query.Title);
+                var actual = Utility.Standardize(audioFile.Title);
+
+                return new RankResult { Path = audioFile.Path, Term = actual, Score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full) };
             }
         }
 
