@@ -32,19 +32,13 @@ namespace Andtech
 				Environment.CurrentDirectory = WorkingDirectory;
 				var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path) };
 
-				var message = $"Now playing '{audioFile.Title}'";
-				if (!string.IsNullOrWhiteSpace(audioFile.Artist))
-				{
-					message += $" by '{audioFile.Artist}'";
-				}
-
 				if (Verbose)
 				{
 					Console.WriteLine($"{executable} {string.Join(" ", arguments)}");
 				}
 
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"{message}...");
+				Console.WriteLine($"Now playing {audioFile}...");
 				Console.ResetColor();
 
 				_ = Cli.Wrap(executable)

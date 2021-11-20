@@ -22,5 +22,20 @@ namespace Andtech.Models
 				Artist = tfile.Tag.FirstPerformer
 			};
 		}
+
+		public override string ToString()
+		{
+			var message = $"'{Title}'";
+			if (!string.IsNullOrWhiteSpace(Artist))
+			{
+				message += $" by '{Artist}'";
+			}
+			if (!string.IsNullOrWhiteSpace(Album))
+			{
+				message += $" ({Album})";
+			}
+
+			return message;
+		}
 	}
 }

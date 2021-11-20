@@ -31,7 +31,7 @@ namespace Andtech
 			{
 				foreach (var result in results.OrderByDescending(x => x.Score).Take(5))
 				{
-					Console.WriteLine($"{result.Score}\t{result.AudioFile.Title}");
+					Console.WriteLine($"{result.Score}\t{result.AudioFile}");
 				}
 			}
 			else
