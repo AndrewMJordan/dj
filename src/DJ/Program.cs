@@ -1,4 +1,5 @@
-﻿using CaseExtensions;
+﻿using Andtech.Models;
+using CaseExtensions;
 using CliWrap;
 using CommandLine;
 using Humanizer;
@@ -47,22 +48,17 @@ namespace Andtech
 				if (results.Any())
 				{
 					var best = results.OrderByDescending(x => x.Score).First();
+
 					var player = Environment.GetEnvironmentVariable("PLAYER");
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.WriteLine($"Now playing '{best.Term.Transform(To.TitleCase)}'...");
-					Console.ResetColor();
+					var process = new AudioPlayerProcess(player);
 
-					var tokens = Utility.SplitCommand(player);
-					var command = tokens.First();
-
-					Console.WriteLine(player);
-					Console.WriteLine(best.Path);
-
-					var arguments = new List<string>(tokens.Skip(1)) { best.Path };
-
-					_ = Cli.Wrap(command)
-						.WithArguments(arguments)
-						.ExecuteAsync();
+					var audioFile = new AudioFile()
+                    {
+						Path = best.Path,
+						Title = best.Term.Humanize(LetterCasing.Title),
+						Artist = "Unknown Artist"
+                    };
+                    process.Play(audioFile);
 				}
 				else
 				{
