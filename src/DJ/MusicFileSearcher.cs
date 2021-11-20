@@ -16,6 +16,12 @@ namespace Andtech
 
 	class MusicFileSearcher
 	{
+		private readonly string searchRoot;
+
+		public MusicFileSearcher(string searchRoot = ".")
+        {
+			this.searchRoot = searchRoot;
+        }
 
 		static List<string> ValidExtensions = new List<string>()
 		{
@@ -35,9 +41,8 @@ namespace Andtech
 			var terms = tokens.Select(x => $@"\b{x}[^\s]*");
 			var regex = new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}");
 
-			var root = ".";
 			var paths = Directory
-				.EnumerateFiles(root, "*", SearchOption.AllDirectories)
+				.EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
 				.Where(IsMusicFile);
 
 			return paths.Select(ToData).Where(x => regex.IsMatch(x.Term));
