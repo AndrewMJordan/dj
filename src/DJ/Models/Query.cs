@@ -13,15 +13,15 @@ namespace Andtech.Models
         public string Artist { get; set; }
         public string Album { get; set; }
 
-        public static Query Parse(params string[] tokens)
+        public static Query Parse(string artist, string album, params string[] tokens)
         {
             var input = string.Join(" ", tokens.Select(x => x.Trim()));
 
             return new Query()
             {
                 Title = input,
-                Artist = string.Empty,
-                Album = string.Empty,
+                Artist = artist,
+                Album = album,
             };
         }
     }

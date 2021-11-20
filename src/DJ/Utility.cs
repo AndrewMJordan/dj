@@ -14,6 +14,11 @@ namespace Andtech
             return x.Humanize(LetterCasing.LowerCase);
         }
 
+        public static IEnumerable<string> Tokenize(string x)
+        {
+            return x.Humanize(LetterCasing.LowerCase).Split(' ');
+        }
+
         public static IEnumerable<string> SplitCommand(string command)
         {
             var regex = new Regex(@"(?<match>[\w-]+)|\""(?<match>[\w\s-]*)""|'(?<match>[\w\s-]*)'");

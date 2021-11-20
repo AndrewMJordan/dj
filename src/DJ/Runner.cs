@@ -50,10 +50,12 @@ namespace Andtech
             {
                 var best = results.OrderByDescending(x => x.Score).First();
 
-                var player = Environment.GetEnvironmentVariable("PLAYER");
-                var process = new AudioPlayerProcess(player);
-
-                process.Play(best.AudioFile);
+                if (!options.DryRun)
+                {
+                    var player = Environment.GetEnvironmentVariable("PLAYER");
+                    var process = new AudioPlayerProcess(player);
+                    process.Play(best.AudioFile);
+                }
             }
             else
             {
@@ -73,7 +75,11 @@ namespace Andtech
         private IEnumerable<RankResult> GetRankedAudioFiles()
         {
             var searcher = new AudioFileSearcher(musicDirectory);
-            var query = Query.Parse(options.Tokens.ToArray());
+            var query = Query.Parse(options.Artist, options.Album, options.Tokens.ToArray());
+            System.Console.WriteLine($"Title is: {query.Title}");
+            System.Console.WriteLine($"Artist is: {query.Artist}");
+            System.Console.WriteLine($"Album is: {query.Album}");
+
             return searcher.GetRanking(query);
         }
     }

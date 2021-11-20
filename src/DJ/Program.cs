@@ -15,8 +15,15 @@ namespace Andtech
 
         [Option("verbose", HelpText = "Print verbose messages.")]
         public bool Verbose { get; set; }
-    }
 
+        [Option("dry-run", HelpText = "Dry run the command.")]
+        public bool DryRun { get; set; }
+
+        [Option("artist", HelpText = "Filter results by artist")]
+        public string Artist { get; set; }
+        [Option("album", HelpText = "Filter results by album.")]
+        public string Album { get; set; }
+    }
 
     class Program
     {
@@ -30,6 +37,7 @@ namespace Andtech
         public static async Task OnParse(Options options)
         {
             var runner = new Runner(options);
+
             if (options.List)
             {
                 await runner.List();

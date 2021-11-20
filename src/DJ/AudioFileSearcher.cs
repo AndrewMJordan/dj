@@ -54,11 +54,14 @@ namespace Andtech
                 .EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
                 .Where(IsMusicFile);
 
-            var titleRegex = GetRegexFromPrefixes(Utility.Standardize(query.Title).Split(' '));
+            var titleRegex = GetRegexFromPrefixes(Utility.Tokenize(query.Title));
+            var artistRegex = string.IsNullOrEmpty(query.Artist) ? null : GetRegexFromPrefixes(Utility.Tokenize(query.Artist));
+            var albumRegex = string.IsNullOrEmpty(query.Album) ? null : GetRegexFromPrefixes(Utility.Tokenize(query.Album));
+
             var audioFiles = paths
                 .Select(AudioFile.Read);
             var rankings = audioFiles
-                .Where(x => titleRegex.IsMatch(x.Title))
+                .Where(Filter)
                 .Select(x => ToData(x));
 
             return rankings;
@@ -67,6 +70,42 @@ namespace Andtech
             {
                 var terms = prefixes .Select(x => $@"\b{x}[^\s]*");
                 return new Regex($"{string.Join(@"\s+([^\s]+\s+)*", terms)}", RegexOptions.IgnoreCase);
+            }
+
+            bool Filter(AudioFile audioFile)
+            {
+                if (!titleRegex.IsMatch(audioFile.Title))
+                {
+                    return false;
+                }
+
+                if (artistRegex != null)
+                {
+                    if (string.IsNullOrEmpty(audioFile.Artist))
+                    {
+                        return false;
+                    }
+
+                    if (!artistRegex?.IsMatch(audioFile.Artist) ?? false)
+                    {
+                        return false;
+                    }
+                }
+
+                if (albumRegex != null)
+                {
+                    if (string.IsNullOrEmpty(audioFile.Album))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!albumRegex?.IsMatch(audioFile.Album) ?? false)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
             RankResult ToData(AudioFile audioFile)
