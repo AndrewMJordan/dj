@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -30,6 +31,20 @@ namespace Andtech
 			return
 				from match in regex.Matches(command)
 				select match.Groups["match"].Value;
+		}
+
+		public static void RunInDirectory(string directory, Action action)
+		{
+			var tempCurrentDirectory = Environment.CurrentDirectory;
+			Environment.CurrentDirectory = directory;
+			try
+			{
+				action();
+			}
+			finally
+			{
+				Environment.CurrentDirectory = tempCurrentDirectory;
+			}
 		}
 	}
 }

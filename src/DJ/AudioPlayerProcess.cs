@@ -22,31 +22,36 @@ namespace Andtech
 
 		public void Play(AudioFile audioFile)
 		{
-			var tokens = Utility.SplitCommand(command);
-			var executable = tokens.First();
+			Utility.RunInDirectory(WorkingDirectory, Play);
 
-			var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(WorkingDirectory, audioFile.Path) };
-
-			var message = $"Now playing '{audioFile.Title}'";
-			if (!string.IsNullOrWhiteSpace(audioFile.Artist))
+			void Play()
 			{
-				message += $" by '{audioFile.Artist}'";
+				var tokens = Utility.SplitCommand(command);
+				var executable = tokens.First();
+
+				Environment.CurrentDirectory = WorkingDirectory;
+				var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path) };
+
+				var message = $"Now playing '{audioFile.Title}'";
+				if (!string.IsNullOrWhiteSpace(audioFile.Artist))
+				{
+					message += $" by '{audioFile.Artist}'";
+				}
+
+				if (Verbose)
+				{
+					Console.WriteLine($"{executable} {string.Join(" ", arguments)}");
+				}
+
+				Console.ForegroundColor = ConsoleColor.Green;
+				Console.WriteLine($"{message}...");
+				Console.ResetColor();
+
+				_ = Cli.Wrap(executable)
+					.WithWorkingDirectory(WorkingDirectory)
+					.WithArguments(arguments)
+					.ExecuteAsync();
 			}
-
-			if (Verbose)
-			{
-				Console.WriteLine($"{executable} {string.Join(" ", arguments)}");
-			}
-
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine($"{message}...");
-			Console.ResetColor();
-
-			_ = Cli.Wrap(executable)
-				.WithWorkingDirectory(WorkingDirectory)
-				.WithArguments(arguments)
-				.ExecuteAsync();
-
 		}
 	}
 }
