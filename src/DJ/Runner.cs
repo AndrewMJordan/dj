@@ -81,6 +81,7 @@ namespace Andtech
             Log($"  Title: {query.Title}");
             Log($"  Artist: {query.Artist}");
             Log($"  Album: {query.Album}");
+            Log($"  Raw: {query.Raw}");
             Log("");
 
             return searcher.GetRanking(query);

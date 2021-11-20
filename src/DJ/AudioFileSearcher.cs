@@ -1,6 +1,7 @@
 ﻿using Andtech.Models;
 using FuzzySharp;
 using Humanizer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,6 +58,15 @@ namespace Andtech
 
             var audioFiles = paths
                 .Select(AudioFile.Read);
+
+            var exacts = audioFiles
+                .Where(x => Path.GetRelativePath(Environment.CurrentDirectory, x.Path) == query.Raw);
+
+            if (exacts.Any())
+			{
+                return exacts.Select(ToData);
+			}
+
             var rankings = audioFiles
                 .Where(comparer.IsMatch)
                 .Select(x => ToData(x));

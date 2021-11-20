@@ -12,6 +12,7 @@ namespace Andtech.Models
         public string Title { get; set; }
         public string Artist { get; set; }
         public string Album { get; set; }
+        public string Raw { get; set; }
 
         public static Query Parse(string artist, string album, params string[] tokens)
         {
@@ -22,6 +23,7 @@ namespace Andtech.Models
                 Title = Utility.Standardize(input),
                 Artist = Utility.Standardize(artist),
                 Album = Utility.Standardize(album),
+                Raw = input
             };
         }
     }
