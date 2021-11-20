@@ -1,4 +1,5 @@
 ﻿using Andtech.Models;
+using ConsoleTables;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,10 +30,13 @@ namespace Andtech
 
 			if (results.Any())
 			{
+				var table = new ConsoleTable("Score", "Title", "Artist", "Album");
 				foreach (var result in results.OrderByDescending(x => x.Score).Take(5))
 				{
-					Console.WriteLine($"{result.Score}\t{result.AudioFile}");
+					table.AddRow(result.Score, result.AudioFile.Title, result.AudioFile.Artist, result.AudioFile.Album);
 				}
+
+				table.Write(Format.Minimal);
 			}
 			else
 			{
