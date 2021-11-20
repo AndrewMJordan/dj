@@ -42,7 +42,7 @@ namespace Andtech
 				var musicDir = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
 				musicDir = Directory.Exists(musicDir) ? musicDir : Environment.CurrentDirectory;
 
-				var searcher = new MusicFileSearcher(musicDir);
+				var searcher = new AudioFileSearcher(musicDir);
 				var results = searcher.GetRanking(options.Tokens.ToArray());
 
 				if (results.Any())
@@ -70,7 +70,7 @@ namespace Andtech
 
 		static void List(string[] args)
 		{
-			var searcher = new MusicFileSearcher();
+			var searcher = new AudioFileSearcher();
 			var results = searcher.GetRanking(args);
 
 			if (results.Any())

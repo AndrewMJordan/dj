@@ -14,11 +14,11 @@ namespace Andtech
         public double Score { get; set; }
     }
 
-    class MusicFileSearcher
+    class AudioFileSearcher
     {
         private readonly string searchRoot;
 
-        public MusicFileSearcher(string searchRoot = ".")
+        public AudioFileSearcher(string searchRoot = ".")
         {
             this.searchRoot = searchRoot;
         }
