@@ -2,6 +2,7 @@
 using CliWrap;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Andtech
@@ -9,6 +10,8 @@ namespace Andtech
 
 	internal class AudioPlayerProcess
 	{
+		public bool Verbose { get; set; }
+
 		private readonly string command;
 
 		public AudioPlayerProcess(string command)
@@ -21,13 +24,17 @@ namespace Andtech
 			var tokens = Utility.SplitCommand(command);
 			var executable = tokens.First();
 
-			var arguments = new List<string>(tokens.Skip(1)) { audioFile.Path };
-
+			var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path) };
 
 			var message = $"Now playing '{audioFile.Title}'";
 			if (!string.IsNullOrWhiteSpace(audioFile.Artist))
 			{
 				message += $" by '{audioFile.Artist}'";
+			}
+
+			if (Verbose)
+			{
+				Console.WriteLine($"{executable} {string.Join(" ", arguments)}");
 			}
 
 			Console.ForegroundColor = ConsoleColor.Green;

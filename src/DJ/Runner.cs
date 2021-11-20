@@ -20,7 +20,7 @@ namespace Andtech
 			Verbose = options.Verbose;
 
 			musicDirectory = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
-			musicDirectory = Directory.Exists(musicDirectory) ? musicDirectory : Environment.CurrentDirectory;
+			musicDirectory = Directory.Exists(musicDirectory) && !string.IsNullOrEmpty(musicDirectory) ? musicDirectory : Environment.CurrentDirectory;
 		}
 
 		public async Task List()
@@ -52,7 +52,10 @@ namespace Andtech
 				if (!options.DryRun)
 				{
 					var player = Environment.GetEnvironmentVariable("PLAYER");
-					var process = new AudioPlayerProcess(player);
+					var process = new AudioPlayerProcess(player)
+					{
+						Verbose = Verbose,
+					};
 					process.Play(best.AudioFile);
 				}
 			}
