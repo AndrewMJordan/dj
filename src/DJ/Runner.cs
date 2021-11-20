@@ -55,6 +55,7 @@ namespace Andtech
 					var process = new AudioPlayerProcess(player)
 					{
 						Verbose = Verbose,
+						WorkingDirectory = musicDirectory
 					};
 					process.Play(best.AudioFile);
 				}

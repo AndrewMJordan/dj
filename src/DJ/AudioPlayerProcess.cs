@@ -11,6 +11,7 @@ namespace Andtech
 	internal class AudioPlayerProcess
 	{
 		public bool Verbose { get; set; }
+		public string WorkingDirectory { get; set; } = Environment.CurrentDirectory;
 
 		private readonly string command;
 
@@ -24,7 +25,7 @@ namespace Andtech
 			var tokens = Utility.SplitCommand(command);
 			var executable = tokens.First();
 
-			var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path) };
+			var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(WorkingDirectory, audioFile.Path) };
 
 			var message = $"Now playing '{audioFile.Title}'";
 			if (!string.IsNullOrWhiteSpace(audioFile.Artist))
@@ -42,6 +43,7 @@ namespace Andtech
 			Console.ResetColor();
 
 			_ = Cli.Wrap(executable)
+				.WithWorkingDirectory(WorkingDirectory)
 				.WithArguments(arguments)
 				.ExecuteAsync();
 
