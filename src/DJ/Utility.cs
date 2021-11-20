@@ -1,4 +1,4 @@
-﻿using CaseExtensions;
+﻿using Humanizer;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,15 +11,23 @@ namespace Andtech
 
 		public static string Standardize(string x)
 		{
-			x = x.ToKebabCase();
-			x = x.Replace("-", " ");
-			return x;
+			if (x is null)
+			{
+				return null;
+			}
+
+			return x.Humanize(LetterCasing.LowerCase);
+		}
+
+		public static IEnumerable<string> Tokenize(string x)
+		{
+			return x.Humanize(LetterCasing.LowerCase).Split(' ');
 		}
 
 		public static IEnumerable<string> SplitCommand(string command)
 		{
 			var regex = new Regex(@"(?<match>[\w-]+)|\""(?<match>[\w\s-]*)""|'(?<match>[\w\s-]*)'");
-			return 
+			return
 				from match in regex.Matches(command)
 				select match.Groups["match"].Value;
 		}
