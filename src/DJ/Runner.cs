@@ -1,5 +1,6 @@
 ﻿using Andtech.Models;
 using ConsoleTables;
+using FuzzySharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,11 +72,13 @@ namespace Andtech
 			}
 		}
 
-		void Log(object message, bool always = false)
+		void Log(object message, ConsoleColor foregroundColor = ConsoleColor.Yellow, bool always = false)
 		{
 			if (Verbose || always)
 			{
+				Console.ForegroundColor = foregroundColor;
 				Console.WriteLine(message);
+				Console.ResetColor();
 			}
 		}
 
@@ -101,7 +104,26 @@ namespace Andtech
 			Log($"  Raw: {query.Raw}");
 			Log("");
 
-			return searcher.GetRanking(query);
+			var results = searcher
+				.EnumerateFiles(query)
+				.Select(ToFileRank)
+				.ToList();
+
+			if (searcher.Report == AudioFileSearcher.SearchReport.SearchedByFilePath)
+			{
+				Log("Fast prepass succeeded! Results were found by analyzing the filepath", ConsoleColor.Cyan);
+			}
+
+			return results;
+
+			RankResult ToFileRank(AudioFile audioFile)
+			{
+				var expected = Utility.Standardize(query.Title);
+				var actual = Utility.Standardize(audioFile.Title);
+				var score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full);
+
+				return new RankResult { AudioFile = audioFile, Term = actual, Score = score };
+			}
 		}
 	}
 }

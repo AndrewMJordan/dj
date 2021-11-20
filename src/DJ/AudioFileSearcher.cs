@@ -17,7 +17,16 @@ namespace Andtech
 
 	class AudioFileSearcher
 	{
+		public SearchReport Report { get; private set; }
+
 		private readonly string searchRoot;
+
+		public enum SearchReport
+		{
+			Undefined,
+			SearchedByFilePath,
+			SearchedByMetadata
+		}
 
 		public AudioFileSearcher(string searchRoot = ".")
 		{
@@ -59,31 +68,35 @@ namespace Andtech
 			return true;
 		}
 
-		public IEnumerable<RankResult> GetRanking(Query query)
+		public IEnumerable<AudioFile> EnumerateFiles(Query query)
 		{
-
-			var comparer = new AudioFileComparer(query);
 			var paths = Directory
 				.EnumerateFiles(searchRoot, "*", SearchOption.AllDirectories)
 				.Where(IsMusicFile);
 
-			var audioFiles = paths
-				.Select(AudioFile.Read);
+			var comparer = new AudioFileComparer(query);
+			var prepass = paths
+				.Where(x => comparer.IsMatch(Path.GetRelativePath(searchRoot, x)))
+				.ToList();
 
-			var rankings = audioFiles
-				.Where(comparer.IsMatch)
-				.Select(x => ToData(x));
-
-			return rankings;
-
-			RankResult ToData(AudioFile audioFile)
+			if (prepass.Any())
 			{
-				var expected = Utility.Standardize(query.Title);
-				var actual = Utility.Standardize(audioFile.Title);
-				var score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full);
+				var prepassAudioFiles = prepass
+					.Select(AudioFile.Read)
+					.Where(comparer.IsMatch)
+					.ToList();
 
-				return new RankResult { AudioFile = audioFile, Term = actual, Score = score };
+				if (prepassAudioFiles.Any())
+				{
+					Report = SearchReport.SearchedByFilePath;
+					return prepassAudioFiles;
+				}
 			}
+
+			Report = SearchReport.SearchedByMetadata;
+			return paths
+				.Select(AudioFile.Read)
+				.Where(comparer.IsMatch);
 		}
 
 		static bool IsMusicFile(string path)

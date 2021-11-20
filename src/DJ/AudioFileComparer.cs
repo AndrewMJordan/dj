@@ -1,5 +1,6 @@
 ﻿using Andtech.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -17,9 +18,34 @@ namespace Andtech
 		{
 			this.query = query;
 
-			titleRegex = GetRegexFromPrefixes(Utility.Tokenize(query.Title));
+			titleRegex = string.IsNullOrEmpty(query.Title) ? null : GetRegexFromPrefixes(Utility.Tokenize(query.Title));
 			artistRegex = string.IsNullOrEmpty(query.Artist) ? null : GetRegexFromPrefixes(Utility.Tokenize(query.Artist));
 			albumRegex = string.IsNullOrEmpty(query.Album) ? null : GetRegexFromPrefixes(Utility.Tokenize(query.Album));
+		}
+
+		public bool IsMatch(string path)
+		{
+			var directory = Path.GetDirectoryName(path);
+			directory = Utility.Standardize(directory);
+			var title = Path.GetFileNameWithoutExtension(path);
+			title = Utility.Standardize(title);
+
+			if (titleRegex?.IsMatch(title) ?? false)
+			{
+				return true;
+			}
+
+			if (artistRegex?.IsMatch(directory) ?? false)
+			{
+				return true;
+			}
+
+			if (albumRegex?.IsMatch(directory) ?? false)
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 		public bool IsMatch(AudioFile audioFile)
@@ -28,9 +54,17 @@ namespace Andtech
 			var artist = Utility.Standardize(audioFile.Artist);
 			var album = Utility.Standardize(audioFile.Album);
 
-			if (!titleRegex.IsMatch(title))
+			if (titleRegex != null)
 			{
-				return false;
+				if (string.IsNullOrEmpty(title))
+				{
+					return false;
+				}
+
+				if (!titleRegex.IsMatch(title))
+				{
+					return false;
+				}
 			}
 
 			if (artistRegex != null)
@@ -52,11 +86,11 @@ namespace Andtech
 				{
 					return false;
 				}
-			}
 
-			if (!albumRegex?.IsMatch(album) ?? false)
-			{
-				return false;
+				if (!albumRegex?.IsMatch(album) ?? false)
+				{
+					return false;
+				}
 			}
 
 			return true;
