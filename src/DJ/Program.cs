@@ -16,7 +16,7 @@ namespace Andtech
 		[Option("verbose", HelpText = "Print verbose messages.")]
 		public bool Verbose { get; set; }
 
-		[Option("dry-run", HelpText = "Dry run the command.")]
+		[Option('n', "dry-run", HelpText = "Dry run the command.")]
 		public bool DryRun { get; set; }
 
 		[Option("title", HelpText = "Filter results by title")]
