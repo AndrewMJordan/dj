@@ -11,7 +11,6 @@ namespace Andtech
 
     internal class RankResult
     {
-        public string Path { get; set; }
         public string Term { get; set; }
         public double Score { get; set; }
         public AudioFile AudioFile { get; set; }
@@ -62,13 +61,6 @@ namespace Andtech
                 .Where(x => titleRegex.IsMatch(x.Title))
                 .Select(x => ToData(x));
 
-            foreach (var file in audioFiles)
-            {
-                System.Console.WriteLine($"{file.Title} by {file.Artist ?? "?"} from {file.Album ?? "?"}");
-            }
-            System.Console.WriteLine(titleRegex);
-            System.Console.WriteLine(rankings.Count());
-
             return rankings;
 
             Regex GetRegexFromPrefixes(IEnumerable<string> prefixes)
@@ -83,7 +75,7 @@ namespace Andtech
                 var actual = Utility.Standardize(audioFile.Title);
                 var score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full);
 
-                return new RankResult { Path = audioFile.Path, Term = actual, Score = score };
+                return new RankResult { AudioFile = audioFile, Term = actual, Score = score };
             }
         }
 

@@ -28,13 +28,11 @@ namespace Andtech
         {
             var results = GetRankedAudioFiles();
 
-            Log("List mode...");
-
             if (results.Any())
             {
                 foreach (var result in results.OrderByDescending(x => x.Score).Take(5))
                 {
-                    Console.WriteLine($"{result.Score}\t{result.Term.Transform(To.TitleCase)}");
+                    Console.WriteLine($"{result.Score}\t{result.AudioFile.Title}");
                 }
             }
             else
@@ -55,13 +53,7 @@ namespace Andtech
                 var player = Environment.GetEnvironmentVariable("PLAYER");
                 var process = new AudioPlayerProcess(player);
 
-                var audioFile = new AudioFile()
-                {
-                    Path = best.Path,
-                    Title = best.Term.Humanize(LetterCasing.Title),
-                    Artist = "Unknown Artist"
-                };
-                process.Play(audioFile);
+                process.Play(best.AudioFile);
             }
             else
             {
