@@ -1,8 +1,7 @@
 name: Release package
 
 env:
-  NUGET_SOURCE_URL: https://nuget.pkg.github.com/andtechstudios
-  NUGET_SOURCE_URL_ALT: https://gitlab.com/api/v4/projects/29250253/packages/nuget
+  NUGET_SOURCE_URL: https://gitlab.com/api/v4/projects/29250253/packages/nuget
   NUGET_PROJECT_DIR: src/DJ/DJ.csproj
 
 on:
@@ -25,5 +24,5 @@ jobs:
           dotnet pack --configuration Release "${{env.NUGET_PROJECT_DIR}}" --no-build --output .
       - name: "Deploy to GitLab"
         run: |      
-          dotnet nuget add source "${{env.NUGET_SOURCE_URL_ALT}}/index.json" --name gitlab --username "${{secrets.GITLAB_ACCESS_TOKEN_OWNER}}" --password "${{secrets.GITLAB_ACCESS_TOKEN}}" --store-password-in-clear-text
+          dotnet nuget add source "${{env.NUGET_SOURCE_URL}}/index.json" --name gitlab --username "${{secrets.GITLAB_ACCESS_TOKEN_OWNER}}" --password "${{secrets.GITLAB_ACCESS_TOKEN}}" --store-password-in-clear-text
           dotnet nuget push *.nupkg --source gitlab --api-key "${{secrets.GITLAB_ACCESS_TOKEN}}" --skip-duplicate
