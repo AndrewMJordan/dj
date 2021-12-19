@@ -1,6 +1,6 @@
 # DJ
 
-[![badge](https://img.shields.io/github/v/tag/andtechstudios/dj?label=nuget)](https://gitlab.com/andtech/pkg/-/packages)
+[![badge](https://img.shields.io/github/v/tag/andtechstudios/dj?label=nuget)](https://gitlab.com/andtech/pkg/-/packages?search[]=dj)
 
 # Installation
 1. Check out installation instructions [here](https://gitlab.com/andtech/pkg).
