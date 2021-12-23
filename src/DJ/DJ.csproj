@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
-		<Version>0.4.0</Version>
+		<Version></Version>
 		<Authors>AndrewMJordan</Authors>
 		<Company>AndrewMJordan</Company>
 		<StartupObject></StartupObject>
@@ -20,8 +20,8 @@
 		<RepositoryType></RepositoryType>
 		<PackageLicenseExpression></PackageLicenseExpression>
 		<AssemblyName>DJ</AssemblyName>
-		<AssemblyVersion>0.4.0.0</AssemblyVersion>
-		<FileVersion>0.4.0.0</FileVersion>
+		<AssemblyVersion></AssemblyVersion>
+		<FileVersion></FileVersion>
 		<Product>DJ</Product>
 		<RepositoryUrl>https://github.com/AndrewMJordan/dj</RepositoryUrl>
 		<RootNamespace>Andtech</RootNamespace>
