@@ -31,7 +31,7 @@ namespace Andtech
 		/// <returns>The tokens of the command string.</returns>
 		public static IEnumerable<string> SplitCommand(string command)
 		{
-			var regex = new Regex(@"(?<match>[\w-]+)|\""(?<match>[\w\s-]*)""|'(?<match>[\w\s-]*)'");
+			var regex = new Regex(@"(?<match>[\w-\.]+)|\""(?<match>[\w\s-\.]*)""|'(?<match>[\w\s-\.]*)'");
 			return
 				from match in regex.Matches(command)
 				select match.Groups["match"].Value;

@@ -20,6 +20,7 @@ namespace Andtech
 		public SearchReport Report { get; private set; }
 
 		private readonly string searchRoot;
+		private readonly bool useMetadata;
 
 		public enum SearchReport
 		{
@@ -28,9 +29,10 @@ namespace Andtech
 			SearchedByMetadata
 		}
 
-		public AudioFileSearcher(string searchRoot = ".")
+		public AudioFileSearcher(string searchRoot = ".", bool useMetadata = true)
 		{
 			this.searchRoot = searchRoot;
+			this.useMetadata = useMetadata;
 		}
 
 		static List<string> ValidExtensions = new List<string>()
@@ -64,7 +66,7 @@ namespace Andtech
 				return false;
 			}
 
-			audioFile = AudioFile.Read(query.Raw);
+			audioFile = AudioFile.Read(query.Raw, useMetadata);
 			return true;
 		}
 
@@ -82,7 +84,7 @@ namespace Andtech
 			if (prepass.Any())
 			{
 				var prepassAudioFiles = prepass
-					.Select(AudioFile.Read)
+					.Select(x => AudioFile.Read(x, useMetadata))
 					.Where(comparer.IsMatch)
 					.ToList();
 
@@ -95,7 +97,7 @@ namespace Andtech
 
 			Report = SearchReport.SearchedByMetadata;
 			return paths
-				.Select(AudioFile.Read)
+				.Select(x => AudioFile.Read(x, useMetadata))
 				.Where(comparer.IsMatch);
 		}
 

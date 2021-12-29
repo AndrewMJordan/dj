@@ -25,6 +25,8 @@ namespace Andtech
 		public string Artist { get; set; }
 		[Option("album", HelpText = "Filter results by album.")]
 		public string Album { get; set; }
+		[Option("no-metadata", HelpText = "Ignore file metadata.")]
+		public bool IgnoreMetadata { get; set; }
 	}
 
 	class Program

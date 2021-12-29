@@ -84,7 +84,7 @@ namespace Andtech
 
 		private IEnumerable<RankResult> GetRankedAudioFiles()
 		{
-			var searcher = new AudioFileSearcher(musicDirectory);
+			var searcher = new AudioFileSearcher(musicDirectory, !options.IgnoreMetadata);
 			var query = Query.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
 			if (searcher.TryGetExact(query, out var audioFile))
 			{
