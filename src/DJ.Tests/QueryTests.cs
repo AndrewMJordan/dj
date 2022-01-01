@@ -38,5 +38,15 @@ namespace DJ.Tests
 
 			Assert.AreEqual("master of puppets", query.Album);
 		}
+
+		[Test]
+		public void ParseAll()
+		{
+			var query = Query.Parse("leper messiah by metallica from master of puppets");
+
+			Assert.AreEqual("leper messiah", query.Title);
+			Assert.AreEqual("metallica", query.Artist);
+			Assert.AreEqual("master of puppets", query.Album);
+		}
 	}
 }
