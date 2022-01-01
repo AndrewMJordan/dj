@@ -9,12 +9,6 @@ namespace DJ.Tests
 	public class QueryTests
 	{
 
-		[SetUp]
-		public void SetUp()
-		{
-			Environment.SetEnvironmentVariable("XDG_MUSIC_DIR", Path.GetFullPath("TestFiles"));
-		}
-
 		[Test]
 		public void ParseTitle()
 		{

@@ -5,7 +5,7 @@ using System.Linq;
 namespace Andtech.DJ
 {
 
-	internal class RankResult
+	public class RankResult
 	{
 		public string Term { get; set; }
 		public double Score { get; set; }

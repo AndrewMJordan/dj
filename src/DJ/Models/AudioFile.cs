@@ -3,7 +3,7 @@
 namespace Andtech.DJ
 {
 
-	internal class AudioFile
+	public class AudioFile
 	{
 		public string Path { get; set; }
 		public string Title { get; set; }

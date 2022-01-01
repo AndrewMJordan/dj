@@ -14,6 +14,7 @@ namespace Andtech.DJ
 		private readonly Options options;
 		private bool Verbose { get; set; }
 		private readonly string musicDirectory;
+		private readonly Query query;
 
 		public Runner(Options options)
 		{
@@ -22,11 +23,18 @@ namespace Andtech.DJ
 
 			musicDirectory = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
 			musicDirectory = Directory.Exists(musicDirectory) && !string.IsNullOrEmpty(musicDirectory) ? musicDirectory : Environment.CurrentDirectory;
+
+			query = Query.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
 		}
 
 		public async Task List()
 		{
-			var results = GetRankedAudioFiles();
+			var searchHelper = new SearchHelper
+			{
+				MusicDirectory = musicDirectory,
+				UseMetadata = !options.IgnoreMetadata
+			};
+			var results = searchHelper.Search(query);
 
 			if (results.Any())
 			{
@@ -47,12 +55,14 @@ namespace Andtech.DJ
 
 		public async Task Play()
 		{
-			var results = GetRankedAudioFiles();
-
-			if (results.Any())
+			var searchHelper = new SearchHelper
 			{
-				var best = results.OrderByDescending(x => x.Score).First();
+				MusicDirectory = musicDirectory,
+				UseMetadata = !options.IgnoreMetadata
+			};
 
+			if (searchHelper.TryFindMatch(query, out var best))
+			{
 				if (!options.DryRun)
 				{
 					var player = Environment.GetEnvironmentVariable("PLAYER");
@@ -61,67 +71,13 @@ namespace Andtech.DJ
 						Verbose = Verbose,
 						WorkingDirectory = musicDirectory
 					};
-					process.Play(best.AudioFile);
+					process.Play(best);
 				}
 			}
 			else
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.Error.WriteLine($"No matches");
-			}
-		}
-
-		void Log(object message, ConsoleColor foregroundColor = ConsoleColor.Yellow, bool always = false)
-		{
-			if (Verbose || always)
-			{
-				Console.ForegroundColor = foregroundColor;
-				Console.WriteLine(message);
-				Console.ResetColor();
-			}
-		}
-
-		private IEnumerable<RankResult> GetRankedAudioFiles()
-		{
-			var searcher = new AudioFileSearcher(musicDirectory, !options.IgnoreMetadata);
-			var query = Query.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
-			if (searcher.TryGetExact(query, out var audioFile))
-			{
-				var result = new RankResult
-				{
-					AudioFile = audioFile,
-					Score = 100,
-					Term = string.Empty,
-				};
-				return Enumerable.Repeat(result, 1);
-			}
-
-			Log("Query is:");
-			Log($"  Title: {query.Title}");
-			Log($"  Artist: {query.Artist}");
-			Log($"  Album: {query.Album}");
-			Log($"  Raw: {query.Raw}");
-			Log("");
-
-			var results = searcher
-				.EnumerateFiles(query)
-				.Select(ToFileRank)
-				.ToList();
-
-			if (searcher.Report == AudioFileSearcher.SearchReport.SearchedByFilePath)
-			{
-				Log("Fast prepass succeeded! Results were found by analyzing the filepath", ConsoleColor.Cyan);
-			}
-
-			return results;
-
-			RankResult ToFileRank(AudioFile audioFile)
-			{
-				var expected = Utility.Standardize(query.Title);
-				var actual = Utility.Standardize(audioFile.Title);
-				var score = Fuzz.Ratio(expected, actual, FuzzySharp.PreProcess.PreprocessMode.Full);
-
-				return new RankResult { AudioFile = audioFile, Term = actual, Score = score };
 			}
 		}
 	}
