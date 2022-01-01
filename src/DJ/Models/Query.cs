@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 
-namespace Andtech.Models
+namespace Andtech.DJ
 {
 
-	internal class Query
+	public class Query
 	{
 		public string Title { get; set; }
 		public string Artist { get; set; }

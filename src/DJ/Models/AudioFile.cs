@@ -1,6 +1,6 @@
 ﻿using Humanizer;
 
-namespace Andtech.Models
+namespace Andtech.DJ
 {
 
 	internal class AudioFile

@@ -1,11 +1,8 @@
-﻿using Andtech.Models;
-using FuzzySharp;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
 	internal class RankResult

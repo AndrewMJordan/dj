@@ -1,5 +1,4 @@
-﻿using Andtech.Models;
-using ConsoleTables;
+﻿using ConsoleTables;
 using FuzzySharp;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
 	internal class Runner
