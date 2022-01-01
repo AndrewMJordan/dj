@@ -11,6 +11,8 @@ namespace Andtech.DJ
 		public string Album { get; set; }
 		public string Raw { get; set; }
 
+		public static Query Parse(string expression) => Parse(null, null, null, expression);
+
 		public static Query Parse(string title, string artist, string album, params string[] tokens)
 		{
 			var input = string.Join(" ", tokens.Select(x => x.Trim()));
