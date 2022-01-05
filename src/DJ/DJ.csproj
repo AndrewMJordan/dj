@@ -24,7 +24,7 @@
 		<FileVersion></FileVersion>
 		<Product>DJ</Product>
 		<RepositoryUrl>https://github.com/AndrewMJordan/dj</RepositoryUrl>
-		<RootNamespace>Andtech</RootNamespace>
+		<RootNamespace>Andtech.DJ</RootNamespace>
 		<Company>AndrewMJordan</Company>
 		<Authors>AndrewMJordan</Authors>
 		<PackageId>Andtech.DJ</PackageId>

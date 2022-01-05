@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
 
-namespace Andtech.Models
+namespace Andtech.DJ
 {
 
-	internal class Query
+	public class Query
 	{
 		public string Title { get; set; }
 		public string Artist { get; set; }
 		public string Album { get; set; }
 		public string Raw { get; set; }
+
+		public static Query Parse(string expression) => Parse(null, null, null, expression.Split(" ", StringSplitOptions.RemoveEmptyEntries));
 
 		public static Query Parse(string title, string artist, string album, params string[] tokens)
 		{

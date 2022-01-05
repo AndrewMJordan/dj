@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
 	class Utility

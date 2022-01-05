@@ -1,11 +1,10 @@
-﻿using Andtech.Models;
-using CliWrap;
+﻿using CliWrap;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
 	internal class AudioPlayerProcess

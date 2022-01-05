@@ -1,10 +1,9 @@
-﻿using Andtech.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
 	internal class AudioFileComparer

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
 	public class Options

@@ -1,14 +1,11 @@
-﻿using Andtech.Models;
-using FuzzySharp;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Andtech
+namespace Andtech.DJ
 {
 
-	internal class RankResult
+	public class RankResult
 	{
 		public string Term { get; set; }
 		public double Score { get; set; }
@@ -60,13 +57,14 @@ namespace Andtech
 
 		public bool TryGetExact(Query query, out AudioFile audioFile)
 		{
-			if (!File.Exists(query.Raw))
+			var path = Path.Combine(searchRoot, query.Raw);
+			if (!File.Exists(path))
 			{
 				audioFile = default;
 				return false;
 			}
 
-			audioFile = AudioFile.Read(query.Raw, useMetadata);
+			audioFile = AudioFile.Read(path, useMetadata);
 			return true;
 		}
 
