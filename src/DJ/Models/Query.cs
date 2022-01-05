@@ -7,8 +7,11 @@ namespace Andtech.DJ
 	public class Query
 	{
 		public string Title { get; set; }
+		public bool HasTitle => !string.IsNullOrEmpty(Title);
 		public string Artist { get; set; }
+		public bool HasArtist => !string.IsNullOrEmpty(Artist);
 		public string Album { get; set; }
+		public bool HasAlbum => !string.IsNullOrEmpty(Album);
 		public string Raw { get; set; }
 
 		public static Query Parse(string expression) => Parse(null, null, null, expression.Split(" ", StringSplitOptions.RemoveEmptyEntries));

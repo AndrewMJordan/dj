@@ -9,7 +9,6 @@ namespace Andtech.DJ
 
 	internal class AudioPlayerProcess
 	{
-		public bool Verbose { get; set; }
 		public string WorkingDirectory { get; set; } = Environment.CurrentDirectory;
 
 		private readonly string command;
@@ -31,14 +30,7 @@ namespace Andtech.DJ
 				Environment.CurrentDirectory = WorkingDirectory;
 				var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path) };
 
-				if (Verbose)
-				{
-					Console.WriteLine($"{executable} {string.Join(" ", arguments)}");
-				}
-
-				Console.ForegroundColor = ConsoleColor.Green;
-				Console.WriteLine($"Now playing {audioFile}...");
-				Console.ResetColor();
+				Log.WriteLine($"{executable} {string.Join(" ", arguments)}", Verbosity.verbose);
 
 				_ = Cli.Wrap(executable)
 					.WithWorkingDirectory(WorkingDirectory)

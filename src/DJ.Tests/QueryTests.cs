@@ -1,7 +1,5 @@
 using Andtech.DJ;
 using NUnit.Framework;
-using System;
-using System.IO;
 
 namespace DJ.Tests
 {
