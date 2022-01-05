@@ -32,7 +32,7 @@ namespace Andtech.DJ
 
 			if (searchHelper.TryFindMatch(query, out var best))
 			{
-				if (options.DryRun)
+				if (!options.DryRun)
 				{
 					var player = Environment.GetEnvironmentVariable("PLAYER");
 					var process = new AudioPlayerProcess(player)
