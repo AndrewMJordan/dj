@@ -57,13 +57,14 @@ namespace Andtech.DJ
 
 		public bool TryGetExact(Query query, out AudioFile audioFile)
 		{
-			if (!File.Exists(query.Raw))
+			var path = Path.Combine(searchRoot, query.Raw);
+			if (!File.Exists(path))
 			{
 				audioFile = default;
 				return false;
 			}
 
-			audioFile = AudioFile.Read(query.Raw, useMetadata);
+			audioFile = AudioFile.Read(path, useMetadata);
 			return true;
 		}
 
