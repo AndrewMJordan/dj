@@ -39,7 +39,7 @@ namespace Andtech.DJ
 					{
 						WorkingDirectory = musicDirectory
 					};
-					process.Play(best);
+					process.Play (best);
 				}
 
 				if (!options.IgnoreMetadata)

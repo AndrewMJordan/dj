@@ -28,7 +28,10 @@ namespace Andtech.DJ
 				var executable = tokens.First();
 
 				Environment.CurrentDirectory = WorkingDirectory;
-				var arguments = new List<string>(tokens.Skip(1)) { Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path) };
+				var arguments = new List<string>(tokens.Skip(1))
+				{
+					$"'{Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path)}'",
+				};
 
 				Log.WriteLine($"{executable} {string.Join(" ", arguments)}", Verbosity.verbose);
 

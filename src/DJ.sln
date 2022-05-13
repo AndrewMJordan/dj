@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DJ", "DJ\DJ.csproj", "{6A2D48C1-1197-4BE2-904D-B52704F09790}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Andtech.DJ", "Andtech.DJ\Andtech.DJ.csproj", "{6A2D48C1-1197-4BE2-904D-B52704F09790}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DJ.Tests", "DJ.Tests\DJ.Tests.csproj", "{E7DDB44B-A5ED-49D5-96ED-BA6ECE5A9F1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Andtech.DJ.Tests", "Andtech.DJ.Tests\Andtech.DJ.Tests.csproj", "{E7DDB44B-A5ED-49D5-96ED-BA6ECE5A9F1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
