@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Andtech.DJ
 {
@@ -27,10 +28,12 @@ namespace Andtech.DJ
 				var tokens = Utility.SplitCommand(command);
 				var executable = tokens.First();
 
+				var filePath = Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path);
+
 				Environment.CurrentDirectory = WorkingDirectory;
 				var arguments = new List<string>(tokens.Skip(1))
 				{
-					$"'{Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path)}'",
+					$"\"{filePath}\"",
 				};
 
 				Log.WriteLine($"{executable} {string.Join(" ", arguments)}", Verbosity.verbose);
