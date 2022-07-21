@@ -27,4 +27,4 @@ jobs:
           dotnet nuget add source "${{env.NUGET_SOURCE_URL}}/index.json" --name gitlab --username "${{env.NUGET_USER_NAME}}" --password "${{env.NUGET_API_KEY}}" --store-password-in-clear-text
           ls
           pwd
-          dotnet nuget push *.nupkg --source gitlab --api-key "${{env.NUGET_API_KEY}}" --skip-duplicate
+          dotnet nuget push $PWD/*.nupkg --source gitlab --api-key "${{env.NUGET_API_KEY}}" --skip-duplicate
