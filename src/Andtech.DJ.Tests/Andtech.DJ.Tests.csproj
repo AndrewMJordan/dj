@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy /Y /S /E /I &quot;$(SolutionDir)TestFiles\*&quot; &quot;$(TargetDir)TestFiles\&quot;" />
+	  <Exec Command="xcopy /Y /S /E /I &quot;$(ProjectDir)\..\TestFiles\*&quot; &quot;$(TargetDir)TestFiles\&quot;" />
   </Target>
 
 </Project>

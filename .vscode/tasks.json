@@ -7,11 +7,9 @@
 			"type": "process",
 			"args": [
 				"build",
-				"${workspaceFolder}/Andtech.DJ/Andtech.DJ.csproj",
+				"${workspaceFolder}/src/Andtech.DJ/Andtech.DJ.csproj",
 				"--configuration",
 				"Debug",
-				"--runtime",
-				"linux-x64",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
@@ -23,7 +21,7 @@
 			"type": "process",
 			"args": [
 				"publish",
-				"${workspaceFolder}/Andtech.DJ/Andtech.DJ.csproj",
+				"${workspaceFolder}/src/Andtech.DJ/Andtech.DJ.csproj",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
 			],
@@ -37,7 +35,7 @@
 				"watch",
 				"run",
 				"--project",
-				"${workspaceFolder}/Andtech.DJ/Andtech.DJ.csproj"
+				"${workspaceFolder}/src/Andtech.DJ/Andtech.DJ.csproj"
 			],
 			"problemMatcher": "$msCompile"
 		}
