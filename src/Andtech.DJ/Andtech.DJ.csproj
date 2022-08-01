@@ -13,7 +13,6 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<ToolCommandName>dj</ToolCommandName>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<Choose>
 		<When Condition=" '$(Configuration)'=='Release' ">
