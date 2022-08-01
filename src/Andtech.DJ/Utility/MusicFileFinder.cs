@@ -37,7 +37,7 @@ namespace Andtech.DJ
 			sw.Stop();
 
 			SearchDuration = sw.Elapsed;
-			if (path == null)
+			if (string.IsNullOrEmpty(path))
 			{
 				audioFile = null;
 				return false;

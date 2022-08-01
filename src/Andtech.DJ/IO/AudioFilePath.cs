@@ -40,7 +40,7 @@ namespace Andtech.DJ
 
 		public static IEnumerable<string> EnumerateAudioFiles(string searchRoot, SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
-			return Directory.EnumerateFiles(searchRoot, "*", SearchOption.TopDirectoryOnly)
+			return Directory.EnumerateFiles(searchRoot, "*", searchOption)
 				.Where(IsMusicFile);
 		}
 	}

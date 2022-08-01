@@ -1,7 +1,7 @@
 using Andtech.DJ;
 using NUnit.Framework;
 
-namespace DJ.Tests
+namespace Andtech.DJ.Tests
 {
 
 	public class SentenceTests
