@@ -52,6 +52,8 @@ namespace Andtech.DJ
 		{
 			string songPath;
 
+			Log.WriteLine(request.Title);
+
 			if (SearchByArtistAndAlbum(MusicDirectory, out songPath))
 			{
 				return songPath;

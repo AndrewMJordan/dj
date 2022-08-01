@@ -12,7 +12,7 @@ namespace Andtech.DJ.Tests
 		[Test]
 		public void FindSong()
 		{
-			var finder = new MusicFileFinder("leper messiah")
+			var finder = new MusicFileFinder("master of puppets")
 			{
 				MusicDirectory = MusicDirectory,
 				UseMetadata = true,
@@ -20,7 +20,26 @@ namespace Andtech.DJ.Tests
 
 			if (finder.TryFindMatch(out var audioFile))
 			{
-				AreSamePath("Metallica/Master of Puppets/Leper Messiah.mp3", audioFile.Path);
+				AreSamePath("Metallica/Master of Puppets/Master of Puppets.mp3", audioFile.Path);
+			}
+			else
+			{
+				Assert.Fail();
+			}
+		}
+
+		[Test]
+		public void FindSongFromPrefixes()
+		{
+			var finder = new MusicFileFinder("mast pup")
+			{
+				MusicDirectory = MusicDirectory,
+				UseMetadata = true,
+			};
+
+			if (finder.TryFindMatch(out var audioFile))
+			{
+				AreSamePath("Metallica/Master of Puppets/Master of Puppets.mp3", audioFile.Path);
 			}
 			else
 			{
@@ -67,7 +86,7 @@ namespace Andtech.DJ.Tests
 		}
 
 		[Test]
-		public void FindSongIgnorePrefix()
+		public void FindSongIgnoreTrivia()
 		{
 			var finder = new MusicFileFinder("and by metallica")
 			{

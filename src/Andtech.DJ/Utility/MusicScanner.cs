@@ -16,9 +16,9 @@ namespace Andtech.DJ
 		{
 			public string Path { get; set; }
 			public Sentence Sentence { get; set; }
+			public int TotalMatchCount { get; set; }
 			public int NonParenthesizedMatchCount { get; set; }
 			public int ParenthesizedMatchCount { get; set; }
-			public int TotalMatchCount => NonParenthesizedMatchCount + ParenthesizedMatchCount;
 			public double Accuracy => (double)TotalMatchCount / Sentence.Words.Count();
 		}
 
@@ -54,7 +54,8 @@ namespace Andtech.DJ
 			var matches = entries
 				.Select(x => ToResult(x, field))
 				.Where(x => x.TotalMatchCount > 0)
-				.OrderByDescending(x => x.ParenthesizedMatchCount)
+				.OrderByDescending(x => x.NonParenthesizedMatchCount)
+				.ThenByDescending(x => x.ParenthesizedMatchCount)
 				.ThenByDescending(x => x.Accuracy);
 
 			path = matches.FirstOrDefault().Path;
@@ -65,16 +66,20 @@ namespace Andtech.DJ
 		{
 			var comparer = GetComparer(field);
 
-			var sentence = Macros.ToSentence(Path.GetFileNameWithoutExtension(x));
+			var sentence = Sentence.Parse(Path.GetFileNameWithoutExtension(x));
 			var result = new MatchResult()
 			{
 				Path = x,
 				Sentence = sentence,
-				ParenthesizedMatchCount = comparer.CountMatches(sentence.ParenthesizedWords),
+				TotalMatchCount = comparer.CountMatches(sentence.Words),
 				NonParenthesizedMatchCount = comparer.CountMatches(sentence.NonParenthesizedWords),
+				ParenthesizedMatchCount = comparer.CountMatches(sentence.ParenthesizedWords),
 			};
 
-			Log.WriteLine($"{string.Join(" ", sentence.NonParenthesizedWords)} ({string.Join(",", sentence.ParenthesizedWords)})\t| {result.NonParenthesizedMatchCount}/{sentence.Words.Count()}\t| {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
+			if (result.TotalMatchCount > 0)
+			{
+				Log.WriteLine($"{string.Join(" ", sentence.NonParenthesizedWords)} ({string.Join(",", sentence.ParenthesizedWords)})\t| {result.NonParenthesizedMatchCount}/{sentence.Words.Count()}\t| {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
+			}
 
 			return result;
 		}
