@@ -45,6 +45,30 @@ namespace Andtech.DJ
 
 			Log.WriteLine($"Found song '{path}' in {sw.ElapsedMilliseconds} ms", ConsoleColor.Cyan, Verbosity.verbose);
 			audioFile = AudioFile.Read(path, false);
+
+			var parent = Path.GetDirectoryName(audioFile.Path);
+			var grandparent = Path.GetDirectoryName(parent);
+
+			int depth = 0;
+			if (!Path.Equals(parent, MusicDirectory))
+			{
+				depth++;
+				if (!Path.Equals(grandparent, MusicDirectory))
+				{
+					depth++;
+				}
+			}
+
+			if (depth == 2)
+			{
+				audioFile.Album = Path.GetFileNameWithoutExtension(parent);
+				audioFile.Artist = Path.GetFileNameWithoutExtension(grandparent);
+			}
+			if (depth == 1)
+			{
+				audioFile.Artist = Path.GetFileNameWithoutExtension(parent);
+			}
+
 			return true;
 		}
 

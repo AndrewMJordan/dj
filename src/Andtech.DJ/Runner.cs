@@ -47,6 +47,7 @@ namespace Andtech.DJ
 				{
 					best = AudioFile.Read(best.Path, true);
 				}
+
 				if (options.DryRun)
 				{
 					Log.WriteLine($"[DRY RUN] Now playing {best}...", ConsoleColor.DarkGreen);
