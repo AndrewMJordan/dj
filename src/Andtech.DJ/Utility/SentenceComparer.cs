@@ -13,10 +13,16 @@ namespace Andtech.DJ
 			this.sentence = sentence;
 		}
 
-		public int CountMatches(IEnumerable<string> tokens) => tokens.Count(sentence.Words.Contains);
+		public int CountMatches(IEnumerable<string> tokens) => tokens
+			.Select(Macros.Standardize)
+			.Count(sentence.Words.Select(Macros.Standardize).Contains);
 
-		public int CountMatchesNonParenthesized(IEnumerable<string> tokens) => tokens.Count(sentence.NonParenthesizedWords.Contains);
+		public int CountMatchesNonParenthesized(IEnumerable<string> tokens) => tokens
+			.Select(Macros.Standardize)
+			.Count(sentence.NonParenthesizedWords.Select(Macros.Standardize).Contains);
 
-		public int CountMatchesParenthesized(IEnumerable<string> tokens) => tokens.Count(sentence.ParenthesizedWords.Contains);
+		public int CountMatchesParenthesized(IEnumerable<string> tokens) => tokens
+			.Select(Macros.Standardize)
+			.Count(sentence.ParenthesizedWords.Select(Macros.Standardize).Contains);
 	}
 }

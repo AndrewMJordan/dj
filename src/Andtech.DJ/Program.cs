@@ -23,7 +23,7 @@ namespace Andtech.DJ
 		[Option('n', "dry-run", HelpText = "Dry run the command.")]
 		public bool DryRun { get; set; }
 
-		[Option("verbosity", HelpText = "Sets the verbosity level of the command.", Default = "info")]
+		[Option("verbosity", HelpText = "Sets the verbosity level of the command.")]
 		public string Verbosity { get; set; }
 		[Option('v', "verbose", HelpText = "Run the command with verbose output. (Same as running with --verbosity verbose)")]
 		public bool Verbose { get; set; }

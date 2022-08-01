@@ -28,9 +28,9 @@ namespace Andtech.DJ
 
 		public MusicScanner(SongRequest request)
 		{
-			var titleSentence = Macros.ToSentence(request.Title);
-			var artistSentence = Macros.ToSentence(request.Artist);
-			var albumSentence = Macros.ToSentence(request.Album);
+			var titleSentence = Sentence.Parse(request.Title);
+			var artistSentence = Sentence.Parse(request.Artist);
+			var albumSentence = Sentence.Parse(request.Album);
 
 			songComparer = new SentenceComparer(titleSentence);
 			artistComparer = new SentenceComparer(artistSentence);
@@ -74,7 +74,7 @@ namespace Andtech.DJ
 				NonParenthesizedMatchCount = comparer.CountMatches(sentence.NonParenthesizedWords),
 			};
 
-			Log.WriteLine($"{sentence} | {result.NonParenthesizedMatchCount}/{sentence.Words.Count()} | {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
+			Log.WriteLine($"{string.Join(" ", sentence.NonParenthesizedWords)} ({string.Join(",", sentence.ParenthesizedWords)})\t| {result.NonParenthesizedMatchCount}/{sentence.Words.Count()}\t| {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
 
 			return result;
 		}
