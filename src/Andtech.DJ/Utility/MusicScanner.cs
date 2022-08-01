@@ -76,10 +76,7 @@ namespace Andtech.DJ
 				ParenthesizedMatchCount = comparer.CountMatches(sentence.ParenthesizedWords),
 			};
 
-			if (result.TotalMatchCount > 0)
-			{
 				Log.WriteLine($"{string.Join(" ", sentence.NonParenthesizedWords)} ({string.Join(",", sentence.ParenthesizedWords)})\t| {result.NonParenthesizedMatchCount}/{sentence.Words.Count()}\t| {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
-			}
 
 			return result;
 		}

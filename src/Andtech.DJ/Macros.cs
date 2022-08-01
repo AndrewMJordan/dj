@@ -27,8 +27,9 @@ namespace Andtech.DJ
 		public static string Standardize(string text)
 		{
 			text = text.ToLower();
+			text = Regex.Replace(text, @"(_+|-+)", " ");
 			text = Regex.Replace(text, @"[^\w\s]", string.Empty);
-			text = Regex.Replace(text, @"\s+", " ");
+			text = Regex.Replace(text, @"(\s+)", " ");
 			text = text.Trim();
 
 			return text;

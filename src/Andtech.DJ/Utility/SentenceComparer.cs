@@ -68,7 +68,7 @@ namespace Andtech.DJ
 
 		static Regex GetRegexFromPrefixes(string prefix)
 		{
-			return new Regex($@"^{prefix}[^\s]*$");
+			return new Regex($@"^{prefix}[^\s]*");
 		}
 	}
 }

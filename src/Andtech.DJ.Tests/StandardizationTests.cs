@@ -53,5 +53,21 @@ namespace Andtech.DJ.Tests
 
 			Assert.AreEqual("and justice for all 1987 rough mix", result);
 		}
+
+		[Test]
+		public void ParseUnderscore()
+		{
+			var result = Macros.Standardize("alpha_bravo");
+
+			Assert.AreEqual("alpha bravo", result);
+		}
+
+		[Test]
+		public void ParseDash()
+		{
+			var result = Macros.Standardize("alpha-bravo");
+
+			Assert.AreEqual("alpha bravo", result);
+		}
 	}
 }
