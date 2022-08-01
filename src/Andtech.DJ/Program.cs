@@ -24,7 +24,7 @@ namespace Andtech.DJ
 		public bool DryRun { get; set; }
 
 		[Option("verbosity", HelpText = "Sets the verbosity level of the command.")]
-		public string Verbosity { get; set; }
+		public Verbosity Verbosity { get; set; }
 		[Option('v', "verbose", HelpText = "Run the command with verbose output. (Same as running with --verbosity verbose)")]
 		public bool Verbose { get; set; }
 	}
@@ -40,7 +40,7 @@ namespace Andtech.DJ
 
 		public static async Task OnParse(Options options)
 		{
-			Log.Verbosity = options.Verbose ? Verbosity.verbose : Enum.Parse<Verbosity>(options.Verbosity);
+			Log.Verbosity = options.Verbose ? Verbosity.verbose : options.Verbosity;
 			var runner = new Runner(options);
 			await runner.Play();
 		}
