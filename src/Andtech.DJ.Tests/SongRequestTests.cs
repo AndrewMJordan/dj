@@ -1,4 +1,3 @@
-using Andtech.DJ;
 using NUnit.Framework;
 
 namespace Andtech.DJ.Tests
