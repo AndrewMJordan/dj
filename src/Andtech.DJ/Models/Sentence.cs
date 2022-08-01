@@ -32,5 +32,7 @@ namespace Andtech.DJ
 
 			return sentence;
 		}
+
+		public override string ToString() => string.Join(" ", Words);
 	}
 }

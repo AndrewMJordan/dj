@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Andtech.Common;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -65,7 +66,7 @@ namespace Andtech.DJ
 			var comparer = GetComparer(field);
 
 			var sentence = Macros.ToSentence(Path.GetFileNameWithoutExtension(x));
-			var node = new MatchResult()
+			var result = new MatchResult()
 			{
 				Path = x,
 				Sentence = sentence,
@@ -73,7 +74,9 @@ namespace Andtech.DJ
 				NonParenthesizedMatchCount = comparer.CountMatches(sentence.NonParenthesizedWords),
 			};
 
-			return node;
+			Log.WriteLine($"{sentence} | {result.NonParenthesizedMatchCount}/{sentence.Words.Count()} | {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
+
+			return result;
 		}
 
 		SentenceComparer GetComparer(MusicMetadataField x)
