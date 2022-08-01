@@ -49,11 +49,11 @@ namespace Andtech.DJ
 				}
 				if (options.DryRun)
 				{
-					Log.WriteLine($"[DRY RUN] Now playing '{best}'...", ConsoleColor.DarkGreen);
+					Log.WriteLine($"[DRY RUN] Now playing {best}...", ConsoleColor.DarkGreen);
 				}
 				else
 				{
-					Log.WriteLine($"Now playing '{best}'...", ConsoleColor.Green);
+					Log.WriteLine($"Now playing {best}...", ConsoleColor.Green);
 				}
 			}
 			else
