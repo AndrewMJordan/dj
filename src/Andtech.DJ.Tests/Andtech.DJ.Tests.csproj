@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Andtech.DJ\Andtech.DJ.csproj" />
+    <ProjectReference Include="../Andtech.DJ/Andtech.DJ.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y /S /E /I &quot;$(SolutionDir)TestFiles\*&quot; &quot;$(TargetDir)TestFiles\&quot;" />
+	  <Exec Command="xcopy /Y /S /E /I &quot;$(SolutionDir)TestFiles\*&quot; &quot;$(TargetDir)TestFiles\&quot;" />
   </Target>
 
 </Project>

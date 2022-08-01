@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Andtech.Common;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Andtech.DJ
 	{
 		private readonly Options options;
 		private readonly string musicDirectory;
-		private readonly Query query;
+		private readonly SongRequest request;
 
 		public Runner(Options options)
 		{
@@ -19,27 +20,27 @@ namespace Andtech.DJ
 			musicDirectory = Environment.GetEnvironmentVariable("XDG_MUSIC_DIR");
 			musicDirectory = Directory.Exists(musicDirectory) && !string.IsNullOrEmpty(musicDirectory) ? musicDirectory : Environment.CurrentDirectory;
 
-			query = Query.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
+			request = SongRequest.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
 		}
 
 		public async Task Play()
 		{
-			var searchHelper = new SearchHelper
+			var finder = new MusicFileFinder(request)
 			{
 				MusicDirectory = musicDirectory,
-				UseMetadata = !options.IgnoreMetadata
+				UseMetadata = !options.IgnoreMetadata,
 			};
 
-			if (searchHelper.TryFindMatch(query, out var best))
+			if (finder.TryFindMatch(out var best))
 			{
 				if (!options.DryRun)
 				{
 					var player = Environment.GetEnvironmentVariable("PLAYER");
 					var process = new AudioPlayerProcess(player)
 					{
-						WorkingDirectory = musicDirectory
+						WorkingDirectory = musicDirectory,
 					};
-					process.Play (best);
+					process.Play(best);
 				}
 
 				if (!options.IgnoreMetadata)
@@ -48,16 +49,16 @@ namespace Andtech.DJ
 				}
 				if (options.DryRun)
 				{
-					Log.WriteLine($"[DRY RUN] Now playing {best}...", ConsoleColor.DarkGreen);
+					Log.WriteLine($"[DRY RUN] Now playing '{best}'...", ConsoleColor.DarkGreen);
 				}
 				else
 				{
-					Log.WriteLine($"Now playing {best}...", ConsoleColor.Green);
+					Log.WriteLine($"Now playing '{best}'...", ConsoleColor.Green);
 				}
 			}
 			else
 			{
-				Log.WriteLine($"No matches", ConsoleColor.Red, Verbosity.error);
+				Log.Error.WriteLine($"No matches", ConsoleColor.Red);
 			}
 		}
 	}

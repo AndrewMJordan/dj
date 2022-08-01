@@ -12,15 +12,15 @@ namespace Andtech.DJ.Tests
 		[Test]
 		public void FindSong()
 		{
-			var helper = new SearchHelper
+			var finder = new MusicFileFinder("leper messiah")
 			{
 				MusicDirectory = MusicDirectory,
 				UseMetadata = true,
 			};
 
-			if (helper.TryFindMatch("leper messiah", out var audioFile))
+			if (finder.TryFindMatch(out var audioFile))
 			{
-				AreSamePath("metallica/master-of-puppets/leper-messiah.mp3", audioFile.Path);
+				AreSamePath("Metallica/Master of Puppets/Leper Messiah.mp3", audioFile.Path);
 			}
 			else
 			{
@@ -31,15 +31,15 @@ namespace Andtech.DJ.Tests
 		[Test]
 		public void FindSongDuplicateMetallica()
 		{
-			var helper = new SearchHelper
+			var finder = new MusicFileFinder("master by metallica")
 			{
 				MusicDirectory = MusicDirectory,
 				UseMetadata = true,
 			};
 
-			if (helper.TryFindMatch("master by metallica", out var audioFile))
+			if (finder.TryFindMatch(out var audioFile))
 			{
-				AreSamePath("metallica/master-of-puppets/master-of-puppets.mp3", audioFile.Path);
+				AreSamePath("Metallica/Master of Puppets/Master of Puppets.mp3", audioFile.Path);
 			}
 			else
 			{
@@ -50,15 +50,69 @@ namespace Andtech.DJ.Tests
 		[Test]
 		public void FindSongDuplicateMeatbodies()
 		{
-			var helper = new SearchHelper
+			var finder = new MusicFileFinder("master by meatbodies")
 			{
 				MusicDirectory = MusicDirectory,
 				UseMetadata = true,
 			};
 
-			if (helper.TryFindMatch("master by meatbodies", out var audioFile))
+			if (finder.TryFindMatch(out var audioFile))
 			{
-				AreSamePath("meatbodies/the-master.mp3", audioFile.Path);
+				AreSamePath("Meatbodies/The Master.mp3", audioFile.Path);
+			}
+			else
+			{
+				Assert.Fail();
+			}
+		}
+
+		[Test]
+		public void FindSongIgnorePrefix()
+		{
+			var finder = new MusicFileFinder("and by metallica")
+			{
+				MusicDirectory = MusicDirectory,
+			};
+
+			if (finder.TryFindMatch(out var audioFile))
+			{
+				AreSamePath("Metallica/...And Justice for All/...And Justice for All.mp3", audioFile.Path);
+			}
+			else
+			{
+				Assert.Fail();
+			}
+		}
+
+		[Test]
+		public void FindSongIgnoreParentheses()
+		{
+			var finder = new MusicFileFinder("old mcdonald")
+			{
+				MusicDirectory = MusicDirectory,
+			};
+
+			if (finder.TryFindMatch(out var audioFile))
+			{
+				AreSamePath("Old McDonald.mp3", audioFile.Path);
+			}
+			else
+			{
+				Assert.Fail();
+			}
+		}
+
+		[Test]
+		public void FindSongWithParenthesesQuery()
+		{
+			var finder = new MusicFileFinder("old mcdonald extended")
+			{
+				MusicDirectory = MusicDirectory,
+			};
+
+			if (finder.TryFindMatch(out var audioFile))
+			{
+				AreSamePath("Old McDonald (Extended).mp3", audioFile.Path);
 			}
 			else
 			{
@@ -77,8 +131,8 @@ namespace Andtech.DJ.Tests
 		public static string NormalizePath(string path)
 		{
 			return Path.GetFullPath(new Uri(path).LocalPath)
-					   .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-					   .ToUpperInvariant();
+				.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+				.ToUpperInvariant();
 		}
 	}
 }

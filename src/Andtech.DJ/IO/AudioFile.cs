@@ -3,6 +3,9 @@
 namespace Andtech.DJ
 {
 
+	/// <summary>
+	/// A description of an audio file on the file system.
+	/// </summary>
 	public class AudioFile
 	{
 		public string Path { get; set; }

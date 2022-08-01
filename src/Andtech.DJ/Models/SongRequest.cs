@@ -4,7 +4,10 @@ using System.Linq;
 namespace Andtech.DJ
 {
 
-	public class Query
+	/// <summary>
+	/// A simple description of a song. Contains additional metadata about the song.
+	/// </summary>
+	public class SongRequest
 	{
 		public string Title { get; set; }
 		public bool HasTitle => !string.IsNullOrEmpty(Title);
@@ -14,9 +17,9 @@ namespace Andtech.DJ
 		public bool HasAlbum => !string.IsNullOrEmpty(Album);
 		public string Raw { get; set; }
 
-		public static Query Parse(string expression) => Parse(null, null, null, expression.Split(" ", StringSplitOptions.RemoveEmptyEntries));
+		public static SongRequest Parse(string sentence) => Parse(null, null, null, sentence.Split(" ", StringSplitOptions.RemoveEmptyEntries));
 
-		public static Query Parse(string title, string artist, string album, params string[] tokens)
+		public static SongRequest Parse(string title, string artist, string album, params string[] tokens)
 		{
 			var input = string.Join(" ", tokens.Select(x => x.Trim()));
 
@@ -52,11 +55,11 @@ namespace Andtech.DJ
 				album = string.Join(" ", tokens.Skip(indexOfAlbumSplit + 1).Take(n - indexOfAlbumSplit));
 			}
 
-			return new Query()
+			return new SongRequest()
 			{
-				Title = Utility.Standardize(title),
-				Artist = Utility.Standardize(artist),
-				Album = Utility.Standardize(album),
+				Title = title,
+				Artist = artist,
+				Album = album,
 				Raw = input
 			};
 		}

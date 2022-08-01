@@ -1,4 +1,5 @@
-﻿using CliWrap;
+﻿using Andtech.Common;
+using CliWrap;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,9 @@ using System.Text.RegularExpressions;
 namespace Andtech.DJ
 {
 
+	/// <summary>
+	/// Represents an audio player process on the client's machine.
+	/// </summary>
 	internal class AudioPlayerProcess
 	{
 		public string WorkingDirectory { get; set; } = Environment.CurrentDirectory;
@@ -21,11 +25,11 @@ namespace Andtech.DJ
 
 		public void Play(AudioFile audioFile)
 		{
-			Utility.RunInDirectory(WorkingDirectory, Play);
+			ShellUtility.RunInDirectory(WorkingDirectory, Play);
 
 			void Play()
 			{
-				var tokens = Utility.SplitCommand(command);
+				var tokens = ParseUtility.QuotedSplit(command);
 				var executable = tokens.First();
 
 				var filePath = Path.GetRelativePath(Environment.CurrentDirectory, audioFile.Path);
