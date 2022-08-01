@@ -1,6 +1,6 @@
 env:
   NUGET_SOURCE_URL: ${{secrets.GITLAB_PKG_URL}}/nuget
-  NUGET_PROJECT_DIR: src/Andtech.DJ/Andtech.DJ.csproj
+  NUGET_PROJECT_DIR: src
   NUGET_USER_NAME: ${{secrets.GITLAB_ACCESS_TOKEN_OWNER}}
   NUGET_API_KEY: ${{secrets.GITLAB_ACCESS_TOKEN}}
 
@@ -25,6 +25,4 @@ jobs:
           dotnet pack --configuration Release "${{env.NUGET_PROJECT_DIR}}" --no-build --output . /p:VersionPrefix="$version"
       - run: |
           dotnet nuget add source "${{env.NUGET_SOURCE_URL}}/index.json" --name gitlab --username "${{env.NUGET_USER_NAME}}" --password "${{env.NUGET_API_KEY}}" --store-password-in-clear-text
-          ls
-          pwd
           dotnet nuget push $PWD/*.nupkg --source gitlab --api-key "${{env.NUGET_API_KEY}}" --skip-duplicate
