@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Andtech.DJ
 {
@@ -24,6 +25,45 @@ namespace Andtech.DJ
 		{
 			this.request = request;
 			scanner = new MusicScanner(request);
+		}
+
+		public static bool IsMatch(SongRequest request, AudioFile audioFile)
+		{
+			if (!string.IsNullOrEmpty(request.Title))
+			{
+				var testTitleSentence = Macros.ToSentence(audioFile.Title);
+				var requestTitleSentence = Macros.ToSentence(request.Title);
+				var titleComparer = new SentenceComparer(requestTitleSentence);
+
+				if (titleComparer.CountMatches(testTitleSentence.Words) < requestTitleSentence.Words.Count())
+				{
+					return false;
+				}
+			}
+			if (!string.IsNullOrEmpty(request.Artist))
+			{
+				var testArtistSentence = Macros.ToSentence(audioFile.Artist);
+				var requestArtistSentence = Macros.ToSentence(request.Artist);
+				var artistComparer = new SentenceComparer(requestArtistSentence);
+
+				if (artistComparer.CountMatches(testArtistSentence.Words) < requestArtistSentence.Words.Count())
+				{
+					return false;
+				}
+			}
+			if (!string.IsNullOrEmpty(request.Album))
+			{
+				var testAlbumSentence = Macros.ToSentence(audioFile.Album);
+				var requestAlbumSentence = Macros.ToSentence(request.Album);
+				var albumComparer = new SentenceComparer(requestAlbumSentence);
+
+				if (albumComparer.CountMatches(testAlbumSentence.Words) < requestAlbumSentence.Words.Count())
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		public bool TryFindMatch(out AudioFile audioFile)

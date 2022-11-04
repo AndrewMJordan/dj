@@ -8,6 +8,13 @@
 		<PackageId>Andtech.DJ</PackageId>
 		<RootNamespace>$(PackageId)</RootNamespace>
 	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 	<!-- dotnet-tool -->
 	<PropertyGroup>
@@ -22,6 +29,17 @@
 		</When>
 	</Choose>
 
+	<!-- Linux Debugging -->
+	<Choose>
+		<When Condition=" '$(Configuration)'=='Debug' ">
+			<PropertyGroup>
+				<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
+
+	<!-- NuGet Packages -->
 	<ItemGroup>
 	  <PackageReference Include="Andtech.Common" Version="0.17.1" />
 	  <PackageReference Include="CliWrap" Version="3.3.3" />
@@ -29,12 +47,6 @@
 	  <PackageReference Include="ConsoleTables" Version="2.4.2" />
 	  <PackageReference Include="Humanizer" Version="2.13.14" />
 	  <PackageReference Include="TagLibSharp" Version="2.2.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="..\..\LICENSE">
-	    <Pack>True</Pack>
-	    <PackagePath></PackagePath>
-	  </None>
 	</ItemGroup>
 
 </Project>
