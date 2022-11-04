@@ -63,7 +63,7 @@ namespace Andtech.DJ
 					var path = entry.Path;
 					if (File.Exists(path))
 					{
-						Log.WriteLine($"Trying '{path}' in index...", ConsoleColor.Gray, Verbosity.verbose);
+						Log.WriteLine($"Trying '{path}' in index...", ConsoleColor.DarkGray, Verbosity.silly);
 						audioFile = AudioFile.Read(path);
 						if (MusicFileFinder.IsMatch(request, audioFile))
 						{
