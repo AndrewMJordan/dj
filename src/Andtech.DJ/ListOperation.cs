@@ -24,7 +24,7 @@ namespace Andtech.DJ
 		{
 			foreach (var entry in Session.Instance.Index)
 			{
-				var freqDate = entry.FreqDate.AddDays(options.Offset);
+				var freqDate = entry.CriticalDate.AddDays(options.Offset);
 				var score = Session.Instance.Frecency.Decode(freqDate);
 
 				var scoreString = string.Format(score < 0.95 ? "{0:0.0}" : "{0:0}", score * 100.0);

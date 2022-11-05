@@ -5,7 +5,7 @@ namespace Andtech.DJ.Models
 
 	internal class Entry : IComparable<AudioFile>
 	{
-		public DateTime FreqDate { get; set; }
+		public DateTime CriticalDate { get; set; }
 		public string Path { get; set; }
 		public int PlayCount { get; set; }
 
@@ -16,7 +16,7 @@ namespace Andtech.DJ.Models
 
 		public Entry(DateTime dateTime, string path)
 		{
-			FreqDate = dateTime;
+			CriticalDate = dateTime;
 			Path = path;
 		}
 
@@ -26,14 +26,14 @@ namespace Andtech.DJ.Models
 			var entry = new Entry()
 			{
 				PlayCount = int.Parse(tokens[0]),
-				FreqDate = DateTime.Parse(tokens[1]).ToUniversalTime(),
+				CriticalDate = DateTime.Parse(tokens[1]).ToUniversalTime(),
 				Path = tokens[2],
 			};
 
 			return entry;
 		}
 
-		public override string ToString() => string.Join(",", PlayCount, FreqDate.ToString("O"), Path);
+		public override string ToString() => string.Join(",", PlayCount, CriticalDate.ToString("O"), Path);
 
 		public int CompareTo(AudioFile other) => Path.CompareTo(other.Path);
 	}

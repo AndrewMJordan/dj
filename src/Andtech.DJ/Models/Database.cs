@@ -59,6 +59,6 @@ namespace Andtech.DJ.Models
 			return ((IEnumerable)list.OrderByDescending(GetFreqDate)).GetEnumerator();
 		}
 
-		static DateTime GetFreqDate(Entry entry) => entry.FreqDate;
+		static DateTime GetFreqDate(Entry entry) => entry.CriticalDate;
 	}
 }

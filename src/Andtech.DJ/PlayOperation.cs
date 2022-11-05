@@ -111,7 +111,7 @@ namespace Andtech.DJ
 
 					if (Session.Instance.Index.TryGetEntry(audioFile, out var entry))
 					{
-						entry.FreqDate = Session.Instance.Frecency.IncreaseScore(entry.FreqDate);
+						entry.CriticalDate = Session.Instance.Frecency.IncreaseScore(entry.CriticalDate);
 						entry.PlayCount++;
 
 						Log.WriteLine("Updating query in the index!", Verbosity.verbose);
