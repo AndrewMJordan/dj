@@ -7,6 +7,7 @@ namespace Andtech.DJ.Utility
 	{
 		public readonly double HalfLife;
 		public readonly double DecayFactor;
+		public readonly double DefaultBaseBonus = 1.0;
 
 		public Frecency(double halfLife)
 		{
@@ -17,9 +18,9 @@ namespace Andtech.DJ.Utility
 		public DateTime IncreaseScore(DateTime criticalDate)
 		{
 			var tau = Math.Abs((DateTime.UtcNow - criticalDate).TotalDays);
-			var score = Math.Exp(DecayFactor * tau);
-			var nextScore = score + 1.0 * Math.Exp(-DecayFactor * tau);
-			var nextTau = Math.Log(nextScore) / DecayFactor;
+			var score = Math.Exp(-DecayFactor * tau);
+			var bonus = DefaultBaseBonus;
+			var nextTau = Math.Log(score + bonus) / DecayFactor;
 			return DateTime.UtcNow + TimeSpan.FromDays(nextTau);
 		}
 
