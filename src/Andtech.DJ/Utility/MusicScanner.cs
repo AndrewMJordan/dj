@@ -1,4 +1,6 @@
 ﻿using Andtech.Common;
+using Andtech.Common.Text.SentenceExpressions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,26 +17,17 @@ namespace Andtech.DJ
 		internal struct MatchResult
 		{
 			public string Path { get; set; }
-			public Sentence Sentence { get; set; }
-			public int TotalMatchCount { get; set; }
-			public int NonParenthesizedMatchCount { get; set; }
-			public int ParenthesizedMatchCount { get; set; }
-			public double Accuracy => (double)TotalMatchCount / Sentence.Words.Count();
+			public bool Success { get; set; }
+			public double NonParenthesizedAccuracy { get; set; }
+			public double ParenthesizedAccuracy { get; set; }
+
 		}
 
-		private readonly SentenceComparer songComparer;
-		private readonly SentenceComparer artistComparer;
-		private readonly SentenceComparer albumComparer;
+		private readonly SongRequest request;
 
 		public MusicScanner(SongRequest request)
 		{
-			var titleSentence = Macros.ToSentence(request.Title);
-			var artistSentence = Macros.ToSentence(request.Artist);
-			var albumSentence = Macros.ToSentence(request.Album);
-
-			songComparer = new SentenceComparer(titleSentence);
-			artistComparer = new SentenceComparer(artistSentence);
-			albumComparer = new SentenceComparer(albumSentence);
+			this.request = request;
 		}
 
 		public bool TryFindDirectory(string searchRoot, out string path, MusicMetadataField field = MusicMetadataField.Artist, SearchOption searchOption = SearchOption.TopDirectoryOnly)
@@ -53,10 +46,9 @@ namespace Andtech.DJ
 		{
 			var matches = entries
 				.Select(x => ToResult(x, field))
-				.Where(x => x.TotalMatchCount > 0)
-				.OrderByDescending(x => x.NonParenthesizedMatchCount)
-				.ThenByDescending(x => x.ParenthesizedMatchCount)
-				.ThenByDescending(x => x.Accuracy);
+				.Where(x => x.Success)
+				.OrderByDescending(x => x.NonParenthesizedAccuracy)
+				.ThenByDescending(x => x.ParenthesizedAccuracy);
 
 			path = matches.FirstOrDefault().Path;
 			return !string.IsNullOrEmpty(path);
@@ -64,36 +56,43 @@ namespace Andtech.DJ
 
 		MatchResult ToResult(string x, MusicMetadataField field)
 		{
-			var comparer = GetComparer(field);
+			var sentex = new Sentex(Path.GetFileNameWithoutExtension(x));
 
-			var sentence = Macros.ToSentence(Path.GetFileNameWithoutExtension(x));
+			TermCollection match;
+			switch (field)
+			{
+				case MusicMetadataField.Song:
+					match = sentex.Match(request.Title);
+					break;
+				case MusicMetadataField.Artist:
+					match = sentex.Match(request.Artist);
+					break;
+				case MusicMetadataField.Album:
+					match = sentex.Match(request.Album);
+					break;
+				default:
+					throw new ArgumentException();
+			}
+
+			var nonParenthesizedCount = match.Count(x => !x.Word.IsParenthesized);
+			var nonParenthesizedMatchCount = match.Count(x => x.Success && !x.Word.IsParenthesized);
+			var parenthesizedCount = match.Count(x => x.Word.IsParenthesized);
+			var parenthesizedMatchCount = match.Count(x => x.Success && x.Word.IsParenthesized);
+
 			var result = new MatchResult()
 			{
 				Path = x,
-				Sentence = sentence,
-				TotalMatchCount = comparer.CountMatches(sentence.Words),
-				NonParenthesizedMatchCount = comparer.CountMatches(sentence.NonParenthesizedWords),
-				ParenthesizedMatchCount = comparer.CountMatches(sentence.ParenthesizedWords),
+				Success = Macros.Validate(match),
 			};
 
-			Log.WriteLine($"{string.Join(",", sentence.NonParenthesizedWords.Select(Macros.Standardize))} ({string.Join(",", sentence.ParenthesizedWords)})\t| {result.NonParenthesizedMatchCount}/{sentence.Words.Count()}\t| {result.ParenthesizedMatchCount}/{sentence.Words.Count()}", System.ConsoleColor.Gray, Verbosity.silly);
+			result.NonParenthesizedAccuracy = nonParenthesizedCount == 0 ? 0.0 : (double)nonParenthesizedMatchCount / nonParenthesizedCount;
+			result.ParenthesizedAccuracy = parenthesizedCount == 0 ? 0.0 : (double)parenthesizedMatchCount / parenthesizedCount;
+
+			Log.WriteLine(x, System.ConsoleColor.DarkGray, Verbosity.silly);
+			Log.WriteLine("  " + string.Join(", ", $"{result.NonParenthesizedAccuracy:P}", $"{result.ParenthesizedAccuracy:P}"),
+				System.ConsoleColor.DarkGray, Verbosity.silly);
 
 			return result;
-		}
-
-		SentenceComparer GetComparer(MusicMetadataField x)
-		{
-			switch (x)
-			{
-				case MusicMetadataField.Song:
-					return songComparer;
-				case MusicMetadataField.Artist:
-					return artistComparer;
-				case MusicMetadataField.Album:
-					return albumComparer;
-			}
-
-			return null;
 		}
 	}
 }

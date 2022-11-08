@@ -1,9 +1,10 @@
 ﻿using Andtech.Common;
-using Andtech.DJ.Models;
+using Andtech.Common.Frecency;
+using Andtech.DJ.Utility;
 using CommandLine;
-using CommandLine.Text;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,51 +34,54 @@ namespace Andtech.DJ
 		public static async Task OnParseAsync(Options options)
 		{
 			var request = SongRequest.Parse(options.Title, options.Artist, options.Album, options.Tokens.ToArray());
+			Log.WriteLine($"Title query is: '{request.Title}'", Verbosity.diagnostic);
+			Log.WriteLine($"Artist query is: '{request.Artist}'", Verbosity.diagnostic);
+			Log.WriteLine($"Album query is: '{request.Album}'", Verbosity.diagnostic);
 
-			var finder = new MusicFileFinder(request)
+			AudioFile audioFile = null;
+			if (!options.NoCache)
 			{
-				MusicDirectory = Session.Instance.MusicRoot,
-				UseMetadata = !options.IgnoreMetadata,
-			};
+				var searcher = new CacheSearcher(request)
+				{
+					UseMetadata = !options.IgnoreMetadata,
+				};
 
-			if (!options.NoCache && SearchIndex(out var audioFile))
-			{
-				Log.WriteLine($"Found '{audioFile.Path}' in index...", ConsoleColor.Cyan, Verbosity.verbose);
-				Play(audioFile);
+				var sw = Stopwatch.StartNew();
+				var success = searcher.Search(out audioFile);
+				sw.Stop();
+
+
+
+				if (success)
+				{
+					Log.WriteLine($"Found '{audioFile.Title}' in cache ({sw.ElapsedMilliseconds} ms)...", ConsoleColor.Cyan, Verbosity.verbose);
+				}
 			}
-			else if (finder.TryFindMatch(out audioFile))
+			if (audioFile is null)
 			{
-				Log.WriteLine($"Found '{audioFile.Path}'...", ConsoleColor.Cyan, Verbosity.verbose);
-				Play(audioFile);
+				var searcher = new FileSystemSearcher(request)
+				{
+					MusicDirectory = Session.Instance.MusicRoot,
+					UseMetadata = !options.IgnoreMetadata,
+				};
+
+				var sw = Stopwatch.StartNew();
+				var success = searcher.Search(out audioFile);
+				sw.Stop();
+
+				if (success)
+				{
+					Log.WriteLine($"Found '{audioFile.Title}' ({sw.ElapsedMilliseconds} ms)...", ConsoleColor.Cyan, Verbosity.verbose);
+				}
 			}
-			else
+
+			if (audioFile is null)
 			{
 				Log.Error.WriteLine($"No matches", ConsoleColor.Red);
 			}
-
-			bool SearchIndex(out AudioFile audioFile)
+			else
 			{
-				foreach (var entry in Session.Instance.Index)
-				{
-					Environment.CurrentDirectory = Session.Instance.MusicRoot;
-					var path = entry.Path;
-					if (File.Exists(path))
-					{
-						Log.WriteLine($"Trying '{path}' in index...", ConsoleColor.DarkGray, Verbosity.silly);
-						audioFile = AudioFile.Read(path);
-						if (MusicFileFinder.IsMatch(request, audioFile))
-						{
-							return true;
-						}
-					}
-					else
-					{
-						Log.WriteLine($"'{path}' doesn't exist...", Verbosity.silly);
-					}
-				}
-
-				audioFile = default;
-				return false;
+				Play(audioFile);
 			}
 
 			void Play(AudioFile audioFile)
@@ -120,7 +124,7 @@ namespace Andtech.DJ
 					{
 						entry = new Entry(DateTime.UtcNow, audioFile.Path)
 						{
-							Path = audioFile.Path,
+							Key = audioFile.Path,
 							PlayCount = 1,
 						};
 

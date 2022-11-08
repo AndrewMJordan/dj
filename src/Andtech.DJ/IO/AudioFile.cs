@@ -1,6 +1,4 @@
-﻿using Humanizer;
-
-namespace Andtech.DJ
+﻿namespace Andtech.DJ
 {
 
 	/// <summary>
@@ -22,7 +20,7 @@ namespace Andtech.DJ
 				return new AudioFile()
 				{
 					Path = path,
-					Title = tfile.Tag.Title ?? System.IO.Path.GetFileNameWithoutExtension(path).Humanize(LetterCasing.Title),
+					Title = tfile.Tag.Title ?? System.IO.Path.GetFileNameWithoutExtension(path),
 					Album = tfile.Tag.Album,
 					Artist = tfile.Tag.FirstPerformer
 				};
@@ -31,7 +29,7 @@ namespace Andtech.DJ
 			return new AudioFile()
 			{
 				Path = path,
-				Title = System.IO.Path.GetFileNameWithoutExtension(path).Humanize(LetterCasing.Title),
+				Title = System.IO.Path.GetFileNameWithoutExtension(path),
 			};
 		}
 

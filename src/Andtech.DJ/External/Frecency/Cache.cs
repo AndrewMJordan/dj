@@ -3,30 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Andtech.DJ.Models
+namespace Andtech.Common.Frecency
 {
 
-	internal class Database : IEnumerable<Entry>
+	public class Cache : IEnumerable<Entry>
 	{
 		private readonly LinkedList<Entry> list = new LinkedList<Entry>();
 
-		public bool Contains(AudioFile key) => TryGetEntry(key, out var _);
-
-		public bool TryGetEntry(AudioFile key, out Entry entry)
-		{
-			entry = list.FirstOrDefault(x => x.CompareTo(key) == 0);
-
-			return entry != default;
-		}
+		public int Count => list.Count;
 
 		public void Add(Entry entry) => list.AddFirst(entry);
 
-		public static Database Read(string path)
+		public bool Remove(Entry entry) => list.Remove(entry);
+
+		public static Cache Read(string path)
 		{
-			var database = new Database();
+			var cache = new Cache();
 			foreach (var line in File.ReadLines(path))
 			{
 				if (string.IsNullOrEmpty(line))
@@ -35,13 +28,13 @@ namespace Andtech.DJ.Models
 				}
 
 				var entry = Entry.Parse(line);
-				database.list.AddLast(entry);
+				cache.list.AddLast(entry);
 			}
 
-			return database;
+			return cache;
 		}
 
-		public static void Write(string path, Database database)
+		public static void Write(string path, Cache database)
 		{
 			var text = string.Join(Environment.NewLine, database.list.Select(x => x.ToString()));
 

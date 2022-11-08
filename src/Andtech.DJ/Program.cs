@@ -1,12 +1,8 @@
 ﻿using Andtech.Common;
-using Andtech.DJ.Models;
-using Andtech.DJ.Utility;
+using Andtech.Common.Frecency;
 using CommandLine;
-using Humanizer;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Andtech.DJ
@@ -27,10 +23,11 @@ namespace Andtech.DJ
 
 		static async Task Main(string[] args)
 		{
-			var result = Parser.Default.ParseArguments<BaseOptions, PlayOperation.Options, ListOperation.Options>(args);
+			var result = Parser.Default.ParseArguments<BaseOptions, PlayOperation.Options, ListOperation.Options, PruneOperation.Options>(args);
 			result.WithParsed<BaseOptions>(PreParse);
 			await result.WithParsedAsync<PlayOperation.Options>(PlayOperation.OnParseAsync);
 			await result.WithParsedAsync<ListOperation.Options>(ListOperation.OnParseAsync);
+			await result.WithParsedAsync<PruneOperation.Options>(PruneOperation.OnParseAsync);
 		}
 
 		public static void PreParse(BaseOptions options)
@@ -51,11 +48,11 @@ namespace Andtech.DJ
 			Session.Instance.IndexPath = indexPath;
 			if (File.Exists(Session.Instance.IndexPath))
 			{
-				Session.Instance.Index = Database.Read(Session.Instance.IndexPath);
+				Session.Instance.Index = Cache.Read(Session.Instance.IndexPath);
 			}
 			else
 			{
-				Session.Instance.Index = new Database();
+				Session.Instance.Index = new Cache();
 			}
 		}
 	}

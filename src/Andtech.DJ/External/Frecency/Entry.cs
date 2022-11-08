@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Andtech.DJ.Models
+namespace Andtech.Common.Frecency
 {
 
-	internal class Entry : IComparable<AudioFile>
+	public class Entry
 	{
 		public DateTime CriticalDate { get; set; }
-		public string Path { get; set; }
+		public string Key { get; set; }
 		public int PlayCount { get; set; }
 
 		private Entry()
@@ -14,10 +14,10 @@ namespace Andtech.DJ.Models
 
 		}
 
-		public Entry(DateTime dateTime, string path)
+		public Entry(DateTime dateTime, string key)
 		{
 			CriticalDate = dateTime;
-			Path = path;
+			Key = key;
 		}
 
 		public static Entry Parse(string text)
@@ -27,14 +27,12 @@ namespace Andtech.DJ.Models
 			{
 				PlayCount = int.Parse(tokens[0]),
 				CriticalDate = DateTime.Parse(tokens[1]).ToUniversalTime(),
-				Path = tokens[2],
+				Key = tokens[2],
 			};
 
 			return entry;
 		}
 
-		public override string ToString() => string.Join(",", PlayCount, CriticalDate.ToString("O"), Path);
-
-		public int CompareTo(AudioFile other) => Path.CompareTo(other.Path);
+		public override string ToString() => string.Join(",", PlayCount, CriticalDate.ToString("O"), Key);
 	}
 }

@@ -1,10 +1,9 @@
-﻿using Andtech.Common;
-using System;
+﻿using System;
 
-namespace Andtech.DJ.Utility
+namespace Andtech.Common.Frecency
 {
 
-	internal class Frecency
+	public class Frecency
 	{
 		public readonly double HalfLife;
 		public readonly double DecayFactor;

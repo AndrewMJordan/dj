@@ -29,7 +29,7 @@
 	<Choose>
 		<When Condition=" '$(Configuration)'=='Debug' ">
 			<PropertyGroup>
-				<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+				<RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
 			</PropertyGroup>
 		</When>
 	</Choose>

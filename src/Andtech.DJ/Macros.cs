@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Andtech.Common.Text.SentenceExpressions;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -7,33 +8,6 @@ namespace Andtech.DJ
 
 	public static class Macros
 	{
-
-		/// <summary>
-		/// Creates an <see cref="Sentence"/> from the string <paramref name="text"/>.
-		/// </summary>
-		/// <param name="text">The text representing the sentence.</param>
-		/// <returns>The sentence.</returns>
-		public static Sentence ToSentence(string text)
-		{
-			text = Standardize(text);
-			return Sentence.Parse(text);
-		}
-
-		/// <summary>
-		/// Convert the string to a standard queryable format.
-		/// </summary>
-		/// <param name="text">The string to standardize.</param>
-		/// <returns>The standardized query string.</returns>
-		public static string Standardize(string text)
-		{
-			text = text.ToLower();
-			text = Regex.Replace(text, @"(_+|-+)", " ");
-			text = Regex.Replace(text, @"[^\w\s]", string.Empty);
-			text = Regex.Replace(text, @"(\s+)", " ");
-			text = text.Trim();
-
-			return text;
-		}
 
 		/// <summary>
 		/// Split the query based on a standard format.
@@ -50,6 +24,19 @@ namespace Andtech.DJ
 			}
 
 			return Regex.Split(text, @"\s+");
+		}
+
+		public static bool Validate(TermCollection termCollection)
+		{
+			var success = true;
+			success &= termCollection.Success;
+			success &= termCollection.Any(x => !x.Word.IsParenthesized && x.Success);
+			if (termCollection.Any(x => x.Word.IsParenthesized))
+			{
+				success &= termCollection.Any(x => x.Word.IsParenthesized && x.Success);
+			}
+
+			return success;
 		}
 	}
 }

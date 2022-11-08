@@ -1,5 +1,4 @@
-﻿using Andtech.DJ.Models;
-using Andtech.DJ.Utility;
+﻿using Andtech.Common.Frecency;
 
 namespace Andtech.DJ
 {
@@ -7,14 +6,14 @@ namespace Andtech.DJ
 	{
 		public Frecency Frecency { get; set; }
 		public string MusicRoot { get; set; }
-		public Database Index { get; set; }
+		public Cache Index { get; set; }
 		public string IndexPath { get; set; }
 
 		public static Session Instance { get; set; }
 
 		public void CommitIndex()
 		{
-			Database.Write(IndexPath, Index);
+			Cache.Write(IndexPath, Index);
 		}
 	}
 }

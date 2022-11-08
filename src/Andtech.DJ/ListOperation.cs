@@ -33,17 +33,17 @@ namespace Andtech.DJ
 				{
 					if (options.Humanize)
 					{
-						Console.WriteLine($"{scoreString}	{entry.PlayCount}	{freqDate.Humanize()}		{entry.Path}");
+						Console.WriteLine($"{scoreString}	{entry.PlayCount}	{freqDate.Humanize()}		{entry.Key}");
 					}
 					else
 					{
 						var tau = Math.Abs((DateTime.UtcNow - freqDate).TotalDays);
-						Console.WriteLine($"{scoreString}	{entry.PlayCount}	{tau:0.00}		{entry.Path}");
+						Console.WriteLine($"{scoreString}	{entry.PlayCount}	{tau:0.00}		{entry.Key}");
 					}
 				}
 				else
 				{
-					Console.WriteLine($"{scoreString}	{entry.Path}");
+					Console.WriteLine($"{scoreString}	{entry.Key}");
 				}
 			}
 		}
