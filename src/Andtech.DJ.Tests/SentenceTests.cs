@@ -31,5 +31,13 @@ namespace Andtech.DJ.Tests
 			CollectionAssert.AreEqual(new string[] { "Uptown", "Funk" }, sentence.NonParenthesizedWords);
 			CollectionAssert.AreEqual(new string[] { "2020", "Remix", "ft.", "Bruno", "Mars" }, sentence.ParenthesizedWords);
 		}
+
+		[Test]
+		public void ParseWithApostrophe()
+		{
+			var sentence = Sentence.Parse("Don't Stop Believing");
+
+			CollectionAssert.AreEqual(new string[] { "Don't", "Stop", "Believing" }, sentence.NonParenthesizedWords);
+		}
 	}
 }
