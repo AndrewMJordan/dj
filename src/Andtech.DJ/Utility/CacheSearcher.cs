@@ -44,7 +44,6 @@ namespace Andtech.DJ.Utility
 
 		bool IsMatch(SongRequest request, AudioFile audioFile)
 		{
-
 			if (!string.IsNullOrEmpty(request.Title))
 			{
 				var sentex = new Sentex(audioFile.Title);

@@ -16,7 +16,7 @@ namespace Andtech.DJ
 		/// <returns>The tokens of the query.</returns>
 		public static IEnumerable<string> Tokenize(string text)
 		{
-			text = text.Trim();
+			text = text?.Trim();
 
 			if (string.IsNullOrEmpty(text))
 			{
