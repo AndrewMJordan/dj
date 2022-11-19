@@ -50,8 +50,6 @@ namespace Andtech.DJ
 				var success = searcher.Search(out audioFile);
 				sw.Stop();
 
-
-
 				if (success)
 				{
 					Log.WriteLine($"Found '{audioFile.Title}' in cache ({sw.ElapsedMilliseconds} ms)...", ConsoleColor.Cyan, Verbosity.verbose);
@@ -59,7 +57,7 @@ namespace Andtech.DJ
 			}
 			if (audioFile is null)
 			{
-				var searcher = new FileSystemSearcher(request)
+				var searcher = new LibrarySearcher(request)
 				{
 					MusicDirectory = Session.Instance.MusicRoot,
 					UseMetadata = !options.IgnoreMetadata,

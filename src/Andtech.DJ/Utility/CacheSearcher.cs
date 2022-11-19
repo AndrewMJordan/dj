@@ -49,7 +49,7 @@ namespace Andtech.DJ.Utility
 				var sentex = new Sentex(audioFile.Title);
 				var match = sentex.Match(request.Title);
 
-				if (!Macros.Validate(match))
+				if (!Macros.IsStrictSuccess(match))
 				{
 					return false;
 				}
@@ -59,7 +59,7 @@ namespace Andtech.DJ.Utility
 				var sentex = new Sentex(audioFile.Artist);
 				var match = sentex.Match(request.Artist);
 
-				if (!Macros.Validate(match))
+				if (!Macros.IsStrictSuccess(match))
 				{
 					return false;
 				}
@@ -69,7 +69,7 @@ namespace Andtech.DJ.Utility
 				var sentex = new Sentex(audioFile.Album);
 				var match = sentex.Match(request.Album);
 
-				if (!Macros.Validate(match))
+				if (!Macros.IsStrictSuccess(match))
 				{
 					return false;
 				}

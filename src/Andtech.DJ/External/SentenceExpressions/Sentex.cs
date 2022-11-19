@@ -76,7 +76,7 @@ namespace Andtech.Common.Text.SentenceExpressions
 				{ }
 			}
 
-			success = matchCount == m && !skippedAny;
+			success = matchCount > 0 && matchCount == m && !skippedAny;
 			return terms;
 		}
 	}

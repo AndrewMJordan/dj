@@ -26,7 +26,15 @@ namespace Andtech.DJ
 			return Regex.Split(text, @"\s+");
 		}
 
-		public static bool Validate(TermCollection termCollection)
+		public static bool IsAnySuccess(TermCollection termCollection)
+		{
+			var success = true;
+			success &= termCollection.Success;
+
+			return success;
+		}
+
+		public static bool IsStrictSuccess(TermCollection termCollection)
 		{
 			var success = true;
 			success &= termCollection.Success;
