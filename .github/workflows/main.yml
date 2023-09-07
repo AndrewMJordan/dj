@@ -1,6 +1,6 @@
 env:
   NUGET_SOURCE_URL: ${{secrets.GITLAB_PKG_URL}}/nuget
-  NUGET_PROJECT_DIR: src/Andtech.DJ/Andtech.DJ.csproj
+  NUGET_PROJECT_DIR: src/Andtech.DJ
   NUGET_USER_NAME: ${{secrets.GITLAB_ACCESS_TOKEN_OWNER}}
   NUGET_API_KEY: ${{secrets.GITLAB_ACCESS_TOKEN}}
 
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
       - run: |
           version=$(git tag -l --sort=-v:refname | head -n 1)
           version=${version/v/}
